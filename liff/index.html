@@ -66,81 +66,28 @@
 
             <div class="tab-pane fade col show active" id="nav-notify" role="tabpanel" aria-labelledby="nav-notify-tab">
 
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25">
-                  <i class="fas fa-thermometer-half"></i>
-                </div>
-                <div class="progress-bar-temperature flex-grow-1 lead">
-                  ---
-                </div>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25 lead">
-                  X
-                </div>
-                <div class="temperature-value flex-grow-1 lead">
-                  <div class="progress">
-                    <div class="progress-bar bg-success progress-bar-x" role="progressbar" style="width: 50%;" aria-valuenow="0" aria-valuemin="-32768" aria-valuemax="32767">0.0</div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25 lead">
-                  Y
-                </div>
-                <div class="temperature-value flex-grow-1 lead">
-                  <div class="progress">
-                    <div class="progress-bar bg-info progress-bar-y" role="progressbar" style="width: 50%;" aria-valuenow="0" aria-valuemin="-32768" aria-valuemax="32767">0.0</div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25 lead">
-                  Z
-                </div>
-                <div class="temperature-value flex-grow-1 lead">
-                  <div class="progress">
-                    <div class="progress-bar bg-warning progress-bar-z" role="progressbar" style="width: 50%;" aria-valuenow="0" aria-valuemin="-32768" aria-valuemax="32767">0.0</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25">
-                  <i class="fas toggle-on">SW1</i>
-                </div>
-                <div class="sw1-value flex-grow-1 lead">
-                  ---
-                </div>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-between text-center mb-3">
-                <div class="w-25">
-                  <i class="fas toggle-on">SW2</i>
-                </div>
-                <div class="sw2-value flex-grow-1 lead">
-                  ---
-                </div>
-              </div>
-
               <div class="row justify-content-center">
 
-                <div class="col text-center">
-                  <button type="button" class="textctrl-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write Text CTRL</button>
-                </div>
+                Display
+                <p>
+                  <div class="col text-center">
+                    <button type="button" class="textctrl-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Set address X=0, Y=0 </button>
+                  </div>
+                </p>
+                <p>
+                  <div class="col text-center">
+                    <button type="button" class="text-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write Text</button>
+                  </div>
+                </p>
 
-                <div class="col text-center">
-                  <button type="button" class="text-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write Text</button>
-                </div>
+                <hr>
 
+                <p>
+                  <div class="col text-center">
+                    <button type="button" class="refresh-value btn btn-primary"><i class="fas fa-sync-alt"></i> One Shot</button>
+                  </div>
+                </p>
 
-                <div class="col text-center">
-                  <button type="button" class="notification-enable btn btn-secondary"><i class="fas fa-toggle-off"></i> Notify</button>
-                </div>
-                <div class="col text-center">
-                  <button type="button" class="refresh-value btn btn-primary"><i class="fas fa-sync-alt"></i> One Shot</button>
-                </div>
               </div>
 
             </div>

@@ -70,6 +70,16 @@ void buzzerStop() {
 }
 
 /*********************************************************************************
+* Debug print
+*********************************************************************************/
+
+void debugPrint(String text){
+  text = "[DBG]" + text;
+  Serial.println(text);
+}
+
+
+/*********************************************************************************
 * BLE settings
 *********************************************************************************/
 // Advertising service UUID
@@ -189,14 +199,14 @@ void bleConnectEvent(uint16_t conn_handle) {
   Bluefruit.Gap.getPeerName(conn_handle, central_name, sizeof(central_name));
 
   Serial.print("Connected from ");
-  Serial.println(central_name);
+  debugPrint(central_name);
 }
 
 // Event for disconnect BLE central
 void bleDisconnectEvent(uint16_t conn_handle, uint8_t reason) {
   (void)reason;
   (void)conn_handle;
-  Serial.println("BLE central disconnect");
+  debugPrint("BLE central disconnect");
 }
 
 typedef struct ble_io_action{
@@ -304,6 +314,7 @@ volatile bleReadAction g_read_action;
 void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
   byte cmd = data[0];
 
+
   switch(cmd){
     case 0 :
       g_display.changed = 1;
@@ -314,7 +325,7 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     case 1:
       g_display_text.changed = 1;
       g_display_text.length = data[1];
-      for(int i = 0; i = 16; i++){
+      for(int i = 0; i < 16; i++){
         g_display_text.text[i] = data[1 + i];
       }
       break;
@@ -374,7 +385,7 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     default:
       break;
   }
-  Serial.print("Get write event");
+  debugPrint("[BLE]Write event done");
 }
 
 
@@ -391,13 +402,13 @@ void sw2ChangedEvent() { g_flag_sw2 = 1; }
 * Control - On board devices
 *********************************************************************************/
 void displayClear(){
-  Serial.println("[BLE]DISP : clear display");
+  debugPrint("[BLE]DISP : clear display");
   display.clearDisplay();  // ディスプレイのバッファを初期化
   display.display();       // ディスプレイのバッファを表示
 }
 
 void displaySetConfigure(int font, int addr_x, int addr_y){
-  Serial.println("[BLE]DISP : write configure");
+  debugPrint("[BLE]DISP : write configure");
   display.clearDisplay();       // ディスプレイのバッファを初期化
   display.setTextSize(font);
   display.setTextColor(WHITE);  // Color White
@@ -405,13 +416,17 @@ void displaySetConfigure(int font, int addr_x, int addr_y){
 }
 
 
-void displayWrite(String text){
-  display.print(text);
+void displayWrite(int length, char ch[16]){
+  debugPrint("[BLE]DISP : write text");
+
+  for(int i = 0; i < length; i++){
+    display.print(ch[i]);
+  }
   display.display();            // ディスプレイを更新
 }
 
 unsigned int swGetValue(unsigned int sw){
-  Serial.println("[BLE]SW : read switch value");
+  debugPrint("[BLE]SW : read switch value");
   unsigned int pin;
   if(sw == 1){
     pin = SW1;
@@ -422,7 +437,7 @@ unsigned int swGetValue(unsigned int sw){
 }
 
 void ledWrite(unsigned int num, unsigned data){
-  Serial.println("[BLE]LED : write led value");
+  debugPrint("[BLE]LED : write led value");
   unsigned int pin;
   switch(num){
     case 2 : pin = LED_DS2; break;
@@ -435,7 +450,7 @@ void ledWrite(unsigned int num, unsigned data){
 }
 
 void buzzerWrite(unsigned int data){
-  Serial.println("[BLE]BUZZER : write buzzer");
+  debugPrint("[BLE]BUZZER : write buzzer");
   if(data){
     buzzerStart();
   }else{
@@ -444,13 +459,13 @@ void buzzerWrite(unsigned int data){
 }
 
 float tempRead(){
-  Serial.println("[BLE]Temperature : read value");
+  debugPrint("[BLE]Temperature : read value");
   return temp.read();
 }
 
 
 void accelRead(float data[3]){
-  Serial.println("[BLE]Accel : read value");
+  debugPrint("[BLE]Accel : read value");
   accel.read();
   data[0] = accel.x;
   data[1] = accel.y;
@@ -458,27 +473,27 @@ void accelRead(float data[3]){
 }
 
 void i2cBeginTransaction(byte address){
-  Serial.println("[BLE]I2C : begin transaction");
+  debugPrint("[BLE]I2C : begin transaction");
   Wire.beginTransmission(address);
 };
 
 void i2cWrite(byte data){
-  Serial.println("[BLE]I2C : write data");
+  debugPrint("[BLE]I2C : write data");
   Wire.write(data);
 };
 
 void i2cEndTransaction(){
-  Serial.println("[BLE]I2C : end transaction");
+  debugPrint("[BLE]I2C : end transaction");
   Wire.endTransmission();
 }
 
 void i2cRequestFrom(byte address){
-  Serial.println("[BLE]I2C : request from");
+  debugPrint("[BLE]I2C : request from");
   Wire.requestFrom(address, 2);
 }
 
 byte i2cRead(){
-  Serial.println("[BLE]I2C : read");
+  debugPrint("[BLE]I2C : read");
   return Wire.read();
 }
 
@@ -486,27 +501,27 @@ byte i2cRead(){
 * Control - IO
 *********************************************************************************/
 void ioDigitalDir(unsigned int pin, unsigned int dir){
-  Serial.println("[BLE]GPIO : set digital dir");
+  debugPrint("[BLE]GPIO : set digital dir");
   pinMode(pin, (dir && 1)? OUTPUT : INPUT);
 }
 
 void ioDigitalWrite(unsigned int pin, unsigned int data){
-  Serial.println("[BLE]GPIO : write digital value");
+  debugPrint("[BLE]GPIO : write digital value");
   digitalWrite(pin, data);
 }
 
 unsigned int ioDigitalRead(unsigned pin){
-  Serial.println("[BLE]GPIO : read digital value");
+  debugPrint("[BLE]GPIO : read digital value");
   return digitalRead(pin);
 }
 
 void ioAnalogWrite(int pin, int pwm){
-  Serial.println("[BLE]GPIO : write analog value");
+  debugPrint("[BLE]GPIO : write analog value");
   //
 }
 
 unsigned int ioAnalogRead(int pin){
-  Serial.println("[BLE]GPIO : write analog value");
+  debugPrint("[BLE]GPIO : write analog value");
   //
 }
 
@@ -554,7 +569,7 @@ void setup() {
   temp.init();
 
   bleConfigure(0);
-  Serial.println("BLE transmitter power : 0dBm");
+  debugPrint("BLE transmitter power : 0dBm");
   bleSetupServicePsdi();
   bleSetupServiceDevice();
   bleSetupServiceUser();
@@ -569,6 +584,8 @@ void loop() {
   byte i2cReadData = 0;
   unsigned int temp = 0;
   float accelData[3] = {0, 0, 0};
+
+  byte data[4] = {0, 0, 0, 0};
 
   for(;;){
     //LED
@@ -606,7 +623,11 @@ void loop() {
     }
     //Display Write text
     if(g_display_text.changed){
-      displayWrite("test");
+      char text[16];
+      for(int i = 0; i < 16; i++){
+        text[i] = g_display_text.text[i];
+      }
+      displayWrite(g_display_text.length, text);
       g_display_text.changed = 0;
     }
     //I2C start transaction
@@ -635,6 +656,10 @@ void loop() {
       i2cReadData = i2cRead();
     }
 
+
+    blesv_devboard_read.write(data, sizeof(data));
+
+    /*
     //BLE Read action
     if(g_read_action.changed){
       byte data[4] = {0, 0, 0, 0};
@@ -671,6 +696,8 @@ void loop() {
       //Set BLE Register
     	blesv_devboard_read.write(data, sizeof(data));
       g_read_action.changed = 0;
+
     }
+    */
   }
 }

@@ -349,22 +349,7 @@ async function refreshValues(device) {
 }
 
 function updateSensorValue(device, buffer) {
-    const temperature = buffer.getInt16(0, true) / 100.0;
-    const accelX = buffer.getInt16(2, true) / 1000.0;
-    const accelY = buffer.getInt16(4, true) / 1000.0;
-    const accelZ = buffer.getInt16(6, true) / 1000.0;
-    const sw1 = buffer.getInt16(8, true);
-    const sw2 = buffer.getInt16(10, true);
 
-    getDeviceProgressBarX(device).style.width = (accelX / 4 * 100 + 50) + "%";
-    getDeviceProgressBarY(device).style.width = (accelY / 4 * 100 + 50) + "%";
-    getDeviceProgressBarZ(device).style.width = (accelZ / 4 * 100 + 50) + "%";
-    getDeviceProgressBarTemperature(device).innerText = temperature + "℃";
-    getDeviceProgressBarX(device).innerText = accelX;
-    getDeviceProgressBarY(device).innerText = accelY;
-    getDeviceProgressBarZ(device).innerText = accelZ;
-    getDeviceStatusSw1(device).innerText = (sw1 == 0x0001)? "ON" : "OFF";
-    getDeviceStatusSw2(device).innerText = (sw2 == 0x0001)? "ON" : "OFF";
 }
 
 async function readCharacteristic(characteristic) {
@@ -586,28 +571,6 @@ function getDeviceDisconnectButton(device) {
     return getDeviceCard(device).getElementsByClassName('device-disconnect')[0];
 }
 
-function getDeviceProgressBarTemperature(device) {
-    return getDeviceCard(device).getElementsByClassName('progress-bar-temperature')[0];
-}
-
-function getDeviceProgressBarX(device) {
-    return getDeviceCard(device).getElementsByClassName('progress-bar-x')[0];
-}
-
-function getDeviceProgressBarY(device) {
-    return getDeviceCard(device).getElementsByClassName('progress-bar-y')[0];
-}
-
-function getDeviceProgressBarZ(device) {
-    return getDeviceCard(device).getElementsByClassName('progress-bar-z')[0];
-}
-
-function getDeviceStatusSw1(device) {
-    return getDeviceCard(device).getElementsByClassName('sw1-value')[0];
-}
-function getDeviceStatusSw2(device) {
-    return getDeviceCard(device).getElementsByClassName('sw2-value')[0];
-}
 
 function getDeviceNotificationButton(device) {
     return getDeviceCard(device).getElementsByClassName('notification-enable')[0];
