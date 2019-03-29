@@ -86,8 +86,6 @@
                   </p>
                 </div>
 
-                </hr>
-
                 <div class="col text-center">
                   <h5>LED</h5>
                   <p>
@@ -107,13 +105,10 @@
                   </p>
                 </div>
 
-
-                </hr>
-
                 <div class="col text-center">
-                  <h5>LED</h5>
+                  <h5>GPIO</h5>
                   <p>
-                    <select class="form-control" id="number" name="number">
+                    <select class="gpio-direction-port form-control" id="gpiodirectionport" name="gpiodirectionport">
                       <option value="0" selected="selected">-Port-</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -125,7 +120,12 @@
                       <option value="15">15</option>
                       <option value="16">16</option>
                     </select>
-                    <button type="button" class="led-write btn btn-secondary"><i class="fas fa-toggle-off"></i> LED Write </button>
+                    <select class="gpio-direction-dir form-control" id="gpiodirectiondir" name="gpiodirectiondir">
+                      <option value="-1" selected="selected">-IN/OUT-</option>
+                      <option value="0">IN</option>
+                      <option value="1">OUT</option>
+                    </select>
+                    <button type="button" class="gpio-direction btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO direction </button>
                   </p>
                 </div>
 
