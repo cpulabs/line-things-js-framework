@@ -206,9 +206,6 @@ function initializeCardForDevice(device) {
     });
 
 
-    template.querySelector('.notification-enable').addEventListener('click', () => {
-        toggleNotification(device).catch(e => onScreenLog(`ERROR on toggleNotification(): ${e}\n${e.stack}`));
-    });
 
     template.querySelector('.refresh-value').addEventListener('click', () => {
         refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
