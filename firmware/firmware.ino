@@ -224,7 +224,6 @@ volatile bleIoAction g_gpio_aw_value;
 
 typedef struct ble_display_action{
   byte changed = 0;
-  byte clear = 0;
   int addr_x = 0;
   int addr_y = 0;
 } bleDispAction;
@@ -236,6 +235,7 @@ typedef struct ble_display_text_action{
 } bleDispTextAction;
 
 volatile bleDispAction g_display;
+volatile int g_display_clear = 0;
 volatile bleDispTextAction g_display_text;
 
 typedef struct ble_i2c_action{
@@ -264,32 +264,34 @@ volatile bleReadAction g_read_action;
  * Write to device format
  * <CMD(1Byte), Payload(17Byte)>
  *  CMD0 : Control display
- *    Payload : don't care(14Byte), clear flag(1Byte), address_x(1Byte), address_y(1Byte)
+ *    Payload : don't care(15Byte), address_x(1Byte), address_y(1Byte)
  *  CMD1 : Write Text
  *    Payload : text length(1Byte), String(16Byte)
- *  CMD2 : Write LED
+ *  CMD2 : Clear display
+ *    Payload : don't care(17Byte)
+ *  CMD3 : Write LED
  *    Payload : don't care(15Byte), port(1Byte), value(1Byte)
- *  CMD3 : Write Buzzer
+ *  CMD4 : Write Buzzer
  *    Payload : don't care(16Byte), value(1Byte)
- *  CMD4 : Set GPIO digital direction
+ *  CMD5 : Set GPIO digital direction
  *    Payload : don't care(15Byte), port(1Byte), direction(1Byte)
- *  CMD5 : Digital Write GPIO
+ *  CMD6 : Digital Write GPIO
  *    Payload : don't care(15Byte), port(1Byte), value(1Byte)
- *  CMD6 : Analog Write GPIO
+ *  CMD7 : Analog Write GPIO
  *    Payload : don't care(15Byte), port(1Byte), value(1Byte)
- *  CMD7 : I2C Start transaction
+ *  CMD8 : I2C Start transaction
  *    Payload : don't care(16Byte), address(1Byte)
- *  CMD8 : I2C Write data
+ *  CMD9 : I2C Write data
  *    Payload : don't care(16Byte), address(1Byte)
- *  CMD9 : I2C Stop transaction
+ *  CMD10 : I2C Stop transaction
  *    Payload : don't care(17Byte)
- *  CMD10 : I2C Request from
+ *  CMD11 : I2C Request from
  *    Payload : don't care(16Byte), address(1Byte)
- *  CMD11 : I2C Read request
+ *  CMD12 : I2C Read request
  *    Payload : don't care(17Byte)
- *  CMD12 : Set port for read digital value
+ *  CMD13 : Set port for read digital value
  *    Payload : don't care(16Byte), port(1Byte)
- *  CMD13 : Set port for read analog value
+ *  CMD14 : Set port for read analog value
  *    Payload : don't care(16Byte), port(1Byte)
  *  CMD32 : Set BLE Read data
  *    Payload : don't care(16Byte), Read CMD(1Byte)
@@ -318,7 +320,6 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
   switch(cmd){
     case 0 :
       g_display.changed = 1;
-      g_display.clear = data[15];
       g_display.addr_x = data[16];
       g_display.addr_y = data[17];
       break;
@@ -329,56 +330,59 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
         g_display_text.text[i] = data[1 + i];
       }
       break;
-    case 2 :
+    case 2:
+      g_display_clear = 1;
+      break;
+    case 3 :
       g_led.changed = 1;
       g_led.port = data[16];
       g_led.value = data[17];
       break;
-    case 3 :
+    case 4 :
       g_buzzer.changed = 1;
       g_buzzer.port = data[16];
       g_buzzer.value = data[17];
       break;
-    case 4 :
+    case 5 :
       g_gpio_dir.changed = 1;
       g_gpio_dir.port = data[16];
       g_gpio_dir.value = data[17];
       break;
-    case 5:
+    case 6:
       g_gpio_w_value.changed = 1;
       g_gpio_w_value.port = data[16];
       g_gpio_w_value.value = data[17];
       break;
-    case 6:
+    case 7:
       g_gpio_aw_value.changed = 1;
       g_gpio_aw_value.port = data[16];
       g_gpio_aw_value.value = data[17];
       break;
-    case 7:
+    case 8:
       g_i2c_start_transaction.changed = 1;
       g_i2c_start_transaction.data = data[17];
       break;
-    case 8:
+    case 9:
       g_i2c_w_value.changed = 1;
       g_i2c_w_value.data = data[17];
       break;
-    case 9:
+    case 10:
       g_i2c_stop_transaction = 1;
       break;
-    case 10:
+    case 11:
       g_i2c_request_from.changed = 1;
       g_i2c_request_from.data = data[17];
       break;
-    case 11:
+    case 12:
       g_i2c_read_req = 1;
       break;
-    case 12:
+    case 13:
       g_gpio_r_port = data[17];
       break;
-    case 13:
+    case 14:
       g_gpio_ar_port = data[17];
       break;
-    case 14:
+    case 15:
       g_read_action.changed = 1;
       g_read_action.cmd = data[17];
       break;
@@ -585,8 +589,6 @@ void loop() {
   unsigned int temp = 0;
   float accelData[3] = {0, 0, 0};
 
-  byte data[4] = {0, 0, 0, 0};
-
   for(;;){
     //LED
     if(g_led.changed){
@@ -615,9 +617,6 @@ void loop() {
     }
     //Display Control
     if(g_display.changed){
-      if(g_display.clear){
-        displayClear();
-      }
       displaySetConfigure(2, g_display.addr_x, g_display.addr_y);
       g_display.changed = 0;
     }
@@ -629,6 +628,11 @@ void loop() {
       }
       displayWrite(g_display_text.length, text);
       g_display_text.changed = 0;
+    }
+    //Display Clear
+    if(g_display_clear){
+      displayClear();
+      g_display_clear = 0;
     }
     //I2C start transaction
     if(g_i2c_start_transaction.changed){
@@ -656,10 +660,6 @@ void loop() {
       i2cReadData = i2cRead();
     }
 
-
-    blesv_devboard_read.write(data, sizeof(data));
-
-    /*
     //BLE Read action
     if(g_read_action.changed){
       byte data[4] = {0, 0, 0, 0};
@@ -698,6 +698,6 @@ void loop() {
       g_read_action.changed = 0;
 
     }
-    */
+
   }
 }

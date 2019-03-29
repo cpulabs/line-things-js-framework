@@ -374,8 +374,21 @@ async function displayPrint(device, text) {
   });
 }
 
+async function displayClear(device, port, value) {
+    const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Display clear : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+
+
 async function ledWrite(device, port, value) {
-    const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+    const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
@@ -386,7 +399,7 @@ async function ledWrite(device, port, value) {
 }
 
 async function buzzerControl(device, value) {
-    const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
+    const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
@@ -397,7 +410,7 @@ async function buzzerControl(device, value) {
 }
 
 async function gpioPinMode(device, port, value) {
-    const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+    const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
@@ -408,7 +421,7 @@ async function gpioPinMode(device, port, value) {
 }
 
 async function gpioDigitalWrite(device, port, value) {
-    const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+    const command = [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
