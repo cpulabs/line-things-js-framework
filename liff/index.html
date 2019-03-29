@@ -65,9 +65,7 @@
 
 
             <div class="tab-pane fade col show active" id="nav-notify" role="tabpanel" aria-labelledby="nav-notify-tab">
-
               <div class="row justify-content-center">
-
                 Display
                 <p>
                   <div class="col text-center">
@@ -79,6 +77,21 @@
                     <button type="button" class="text-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write Text</button>
                   </div>
                 </p>
+
+                LED
+                <p>
+                  <div class="col text-center">
+                    <button type="button" class="textctrl-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Set address X=0, Y=0 </button>
+                  </div>
+                </p>
+                <p>
+                  <div class="col text-center">
+                    <button type="button" class="text-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write Text</button>
+                  </div>
+                </p>
+
+
+
 
                 <hr>
 
@@ -94,174 +107,7 @@
 
             <div class="tab-pane fade col" id="nav-write" role="tabpanel" aria-labelledby="nav-write-tab">
 
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  LED2
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="led0" action="">
-                      <input type="checkbox" class="led0_value flex-grow-1 lead" name="led0" id="led0-id" autocomplete="on">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  LED3
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="led1" action="">
-                      <input type="checkbox" class="led1_value flex-grow-1 lead" name="led1" id="led1-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  LED4
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="led2" action="">
-                      <input type="checkbox" class="led2_value flex-grow-1 lead" name="led2" id="led2-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  LED5
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="led3" action="">
-                      <input type="checkbox" class="led3_value flex-grow-1 lead" name="led1" id="led3-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  Buzzer
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="buzzer" action="">
-                      <input type="checkbox" class="buzzer_value flex-grow-1 lead" name="buzzer" id="buzzer-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO2
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io2" action="">
-                      <input type="checkbox" class="io2_value flex-grow-1 lead" name="io2" id="io2-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO3
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io3" action="">
-                      <input type="checkbox" class="io3_value flex-grow-1 lead" name="io3" id="io3-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO4
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io4" action="">
-                      <input type="checkbox" class="io4_value flex-grow-1 lead" name="io4" id="io4-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO5
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io5" action="">
-                      <input type="checkbox" class="io5_value flex-grow-1 lead" name="io5" id="io5-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO12
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io12" action="">
-                      <input type="checkbox" class="io12_value flex-grow-1 lead" name="io12" id="io12-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO13
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io13" action="">
-                      <input type="checkbox" class="io13_value flex-grow-1 lead" name="io13" id="io13-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO14
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io14" action="">
-                      <input type="checkbox" class="io14_value flex-grow-1 lead" name="io14" id="io14-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO15
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io15" action="">
-                      <input type="checkbox" class="io15_value flex-grow-1 lead" name="io15" id="io15-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between text-center mb-1">
-                <div class="w-25">
-                  IO16
-                </div>
-                <div class="flex-grow-1 lead">
-                  <p>
-                    <form name="io16" action="">
-                      <input type="checkbox" class="io16_value flex-grow-1 lead" name="io16" id="io16-id" autocomplete="off">
-                    </form>
-                  </p>
-                </div>
-              </div>
+
             </div>
             <div class="tab-pane fade col" id="nav-advert" role="tabpanel" aria-labelledby="nav-advert-tab">
               <div class="row justify-content-center">
