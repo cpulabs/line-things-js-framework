@@ -1,6 +1,7 @@
-const USER_SERVICE_UUID = "f2b742dc-35e3-4e55-9def-0ce4a209c552";
+const USER_SERVICE_UUID = "981b0d79-2855-44f4-aa14-3c34012a3dd3";
 const USER_CHARACTERISTIC_NOTIFY_UUID = "e90b4b4e-f18a-44f0-8691-b041c7fe57f2";
-const USER_CHARACTERISTIC_WRITE_UUID = "4f2596d7-b3d6-4102-85a2-947b80ab4c6f";
+const USER_CHARACTERISTIC_READ_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
+const USER_CHARACTERISTIC_WRITE_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
 
 const deviceUUIDSet = new Set();
 const connectedUUIDSet = new Set();
@@ -209,6 +210,14 @@ function initializeCardForDevice(device) {
         toggleNotification(device).catch(e => onScreenLog(`ERROR on toggleNotification(): ${e}\n${e.stack}`));
     });
 
+    template.querySelector('.refresh-value').addEventListener('click', () => {
+        refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
+    });
+
+    template.querySelector('.text-write').addEventListener('click', () => {
+        refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
+    });
+
     // Tabs
     ['notify', 'write', 'advert'].map(key => {
         const tab = template.querySelector(`#nav-${key}-tab`);
@@ -316,16 +325,20 @@ function notificationCallback(e) {
 }
 
 async function refreshValues(device) {
-    const accelerometerCharacteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_NOTIFY_UUID);
+    const readCharacteristic = await getCharacteristic(
+        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_READ_UUID);
 
-    const accelerometerBuffer = await readCharacteristic(accelerometerCharacteristic).catch(e => {
+    const valueBuffer = await readCharacteristic(readCharacteristic).catch(e => {
         return null;
     });
 
+    /*
     if (accelerometerBuffer !== null) {
         updateSensorValue(device, accelerometerBuffer);
     }
+    */
+    onScreenLog('Read Value  : ' + valueBuffer);
+
 }
 
 function updateSensorValue(device, buffer) {
