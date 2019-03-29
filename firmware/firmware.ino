@@ -170,10 +170,10 @@ void bleSetupServiceDevice() {
   blesv_devboard_write.setFixedLen(20);
   blesv_devboard_write.begin();
 
-  blesv_devboard_write.setProperties(CHR_PROPS_READ);
-	blesv_devboard_write.setPermission(SECMODE_ENC_NO_MITM, SECMODE_ENC_NO_MITM);
-	blesv_devboard_write.setFixedLen(4);
-	blesv_devboard_write.begin();
+  blesv_devboard_read.setProperties(CHR_PROPS_READ);
+	blesv_devboard_read.setPermission(SECMODE_ENC_NO_MITM, SECMODE_ENC_NO_MITM);
+	blesv_devboard_read.setFixedLen(4);
+	blesv_devboard_read.begin();
 }
 
 void bleSetupServiceUser() {
@@ -374,6 +374,7 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     default:
       break;
   }
+  Serial.print("Get write event");
 }
 
 
@@ -668,7 +669,7 @@ void loop() {
       }
 
       //Set BLE Register
-    	blesv_devboard_write.write(data, sizeof(data));
+    	blesv_devboard_read.write(data, sizeof(data));
       g_read_action.changed = 0;
     }
   }

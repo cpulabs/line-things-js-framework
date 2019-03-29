@@ -439,7 +439,7 @@ async function writeText(device) {
         throw e;
     });
 
-    onScreenLog(`Write done`;
+    onScreenLog(`Write text done`);
 }
 
 
@@ -454,7 +454,7 @@ async function writeTextControl(device) {
         throw e;
     });
 
-    onScreenLog(`Write done`;
+    onScreenLog(`Write text control done`);
 }
 
 
