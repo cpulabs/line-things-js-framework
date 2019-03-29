@@ -430,7 +430,6 @@ async function updateLedState(device) {
 
 
 async function writeText(device) {
-
     const command = [1, 4, 0x30, 0x31, 0x32, 0x33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     const characteristic = await getCharacteristic(
@@ -439,6 +438,8 @@ async function writeText(device) {
         onScreenLog(`Write text : Error writing ${characteristic.uuid}: ${e}`);
         throw e;
     });
+
+    onScreenLog(`Write done`;
 }
 
 
@@ -452,8 +453,86 @@ async function writeTextControl(device) {
         onScreenLog(`Write text control : Error writing ${characteristic.uuid}: ${e}`);
         throw e;
     });
+
+    onScreenLog(`Write done`;
 }
 
+
+
+async function displayControl(device, clear, addr_x, addr_y) {
+    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, clear, addr_x, addr_y];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Write text control : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+async function displayPrint(device, text) {
+  let text_byte = [];
+  for(let i = 0; i < 16; i = i + 1) {
+    text_byte[i] = parseInt(text.substring(i * 2, i * 2 + 2), 16);
+  }
+
+  const length = text.length;
+  const header = [1, length];
+  const command = header.concat(text_byte);
+
+  onScreenLog('Write text to OLED : ' + new Uint8Array(command));
+
+  const characteristic = await getCharacteristic(
+        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+  await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+      onScreenLog(`Error writing ${characteristic.uuid}: ${e}`);
+      throw e;
+  });
+}
+
+async function ledWrite(device, port, value) {
+    const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Write LED : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+async function buzzerControl(device, value) {
+    const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+async function gpioPinMode(device, port, value) {
+    const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+async function gpioDigitalWrite(device, port, value) {
+    const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
 
 async function writeAdvertuuid(device, uuid) {
   const tx_uuid = uuid.replace(/-/g, '');
