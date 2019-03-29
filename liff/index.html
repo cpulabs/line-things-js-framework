@@ -91,9 +91,30 @@
                 <div class="col text-center">
                   <h5>LED</h5>
                   <p>
+                    <select class="led-port form-control" id="ledport" name="ledport">
+                      <option value="-1" selected="selected">-Select LED-</option>
+                      <option value="2">DS2</option>
+                      <option value="3">DS3</option>
+                      <option value="4">DS4</option>
+                      <option value="5">DS5</option>
+                    </select>
+                    <select class="led-value form-control" id="ledvalue" name="ledvalue">
+                      <option value="-1" selected="selected">-Select ON/OFF-</option>
+                      <option value="0">OFF</option>
+                      <option value="1">ON</option>
+                    </select>
+                    <button type="button" class="led-write btn btn-secondary"><i class="fas fa-toggle-off"></i> LED Write </button>
+                  </p>
+                </div>
+
+
+                <div class="col text-center">
+                  <h5>LED</h5>
+                  <p>
                     <select class="form-control" id="number" name="number">
+                      <option value="0" selected="selected">-Port-</option>
                       <option value="2">2</option>
-                      <option value="3" selected="selected">3</option>
+                      <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
                       <option value="12">12</option>
@@ -105,7 +126,6 @@
                     <button type="button" class="led-write btn btn-secondary"><i class="fas fa-toggle-off"></i> LED Write </button>
                   </p>
                 </div>
-
 
 
 
