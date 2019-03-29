@@ -170,7 +170,7 @@ function initializeCardForDevice(device) {
     });
 
 
-    template.querySelector('.text-claer').addEventListener('click', () => {
+    template.querySelector('.text-clear').addEventListener('click', () => {
         displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
 
