@@ -169,6 +169,11 @@ function initializeCardForDevice(device) {
         writeText(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
 
+
+    template.querySelector('.text-claer').addEventListener('click', () => {
+        displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
+    });
+
     // Tabs
     ['notify', 'write', 'advert'].map(key => {
         const tab = template.querySelector(`#nav-${key}-tab`);
@@ -374,7 +379,7 @@ async function displayPrint(device, text) {
   });
 }
 
-async function displayClear(device, port, value) {
+async function displayClear(device) {
     const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     const characteristic = await getCharacteristic(
