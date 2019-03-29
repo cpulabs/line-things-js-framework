@@ -214,8 +214,14 @@ function initializeCardForDevice(device) {
         refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
     });
 
+
+
+    template.querySelector('.textctrl-write').addEventListener('click', () => {
+        writeTextControl(device).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
+    });
+
     template.querySelector('.text-write').addEventListener('click', () => {
-        refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
+        writeText(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
 
     // Tabs
@@ -325,10 +331,11 @@ function notificationCallback(e) {
 }
 
 async function refreshValues(device) {
-    const readCharacteristic = await getCharacteristic(
+    const readCmdCharacteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_READ_UUID);
 
-    const valueBuffer = await readCharacteristic(readCharacteristic).catch(e => {
+    const valueBuffer = await readCharacteristic(readCmdCharacteristic).catch(e => {
+        onScreenLog('Read Value  : ' + "error");
         return null;
     });
 
@@ -419,6 +426,34 @@ async function updateLedState(device) {
         throw e;
     });
 }
+
+
+
+async function writeText(device) {
+
+    const command = [1, 4, 0x30, 0x31, 0x32, 0x33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Write text : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+
+async function writeTextControl(device) {
+
+    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Write text control : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
 
 async function writeAdvertuuid(device, uuid) {
   const tx_uuid = uuid.replace(/-/g, '');
