@@ -155,64 +155,90 @@ function initializeCardForDevice(device) {
 
 
 
-    template.querySelector('.refresh-value').addEventListener('click', () => {
-        refreshValues(device).catch(e => `ERROR on refreshValues(): ${e}\n${e.stack}`);
+    template.querySelector('.device-read').addEventListener('click', () => {
+        deviceRead(device).catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
     });
-
 
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
-        writeTextControl(device).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
+        writeTextControl(device,
+          parseInt(template.querySelector('.displayaddress_x').value, 16),
+          parseInt(template.querySelector('.displayaddress_y').value, 16)
+        ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
     });
     template.querySelector('.text-write').addEventListener('click', () => {
-        writeText(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
+        writeText(device,
+          template.querySelector('.display_text').value
+        ).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
     template.querySelector('.text-clear').addEventListener('click', () => {
         displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
     template.querySelector('.led-write').addEventListener('click', () => {
-        ledWrite(device, 0, 0).catch(e => `ERROR on writeLed(): ${e}\n${e.stack}`);
+        ledWrite(device,
+          parseInt(template.querySelector('.led-port').value, 16),
+          parseInt(template.querySelector('.led-value').value, 16)
+        ).catch(e => `ERROR on writeLed(): ${e}\n${e.stack}`);
     });
     template.querySelector('.buzzer-write').addEventListener('click', () => {
-        buzzerControl(device, 0).catch(e => `ERROR on buzzerControl(): ${e}\n${e.stack}`);
+        buzzerControl(device,
+          parseInt(template.querySelector('.buzzer-control').value, 16)
+        ).catch(e => `ERROR on buzzerControl(): ${e}\n${e.stack}`);
     });
     template.querySelector('.gpio-direction').addEventListener('click', () => {
-        gpioPinMode(device, 0, 0).catch(e => `ERROR on gpioPinMode(): ${e}\n${e.stack}`);
+        gpioPinMode(device,
+          parseInt(template.querySelector('.gpio-direction-port').value, 16),
+          parseInt(template.querySelector('.gpio-direction-dir').value, 16)
+        ).catch(e => `ERROR on gpioPinMode(): ${e}\n${e.stack}`);
     });
     template.querySelector('.gpio-dwrite').addEventListener('click', () => {
-        gpioDigitalWrite(device, 0, 0).catch(e => `ERROR on gpioDirigtalWrite(): ${e}\n${e.stack}`);
+        gpioDigitalWrite(device,
+          parseInt(template.querySelector('.gpio-digitalwrite-port').value, 16),
+          parseInt(template.querySelector('.gpio-digitalwrite-value').value, 16)
+        ).catch(e => `ERROR on gpioDirigtalWrite(): ${e}\n${e.stack}`);
     });
-
-
-
+    template.querySelector('.gpio-awrite').addEventListener('click', () => {
+        gpioAnalogWrite(device,
+          parseInt(template.querySelector('.gpio-awrite-port').value, 16),
+          parseInt(template.querySelector('.gpio-awrite-value').value, 16)
+        ).catch(e => `ERROR on gpioAnalogWrite(): ${e}\n${e.stack}`);
+    });
     template.querySelector('.i2c-start').addEventListener('click', () => {
-        i2cStartTransaction(device, 0).catch(e => `ERROR on i2cStartTransaction(): ${e}\n${e.stack}`);
+        i2cStartTransaction(device,
+          parseInt(template.querySelector('.i2c-start-addr').value, 16),
+        ).catch(e => `ERROR on i2cStartTransaction(): ${e}\n${e.stack}`);
     });
     template.querySelector('.i2c-write').addEventListener('click', () => {
-        i2cWrite(device, 0).catch(e => `ERROR on i2cWrite(): ${e}\n${e.stack}`);
+        i2cWrite(device,
+          parseInt(template.querySelector('.i2c-write-data').value, 16),
+        ).catch(e => `ERROR on i2cWrite(): ${e}\n${e.stack}`);
     });
     template.querySelector('.i2c-stop').addEventListener('click', () => {
         i2cStopTransaction(device).catch(e => `ERROR on i2cStopTransaction(): ${e}\n${e.stack}`);
     });
     template.querySelector('.i2c-request').addEventListener('click', () => {
-        i2cRequestFrom(device, 0).catch(e => `ERROR on i2cRequestFrom(): ${e}\n${e.stack}`);
+        i2cRequestFrom(device,
+          parseInt(template.querySelector('.i2c-request-addr').value, 16),
+        ).catch(e => `ERROR on i2cRequestFrom(): ${e}\n${e.stack}`);
     });
     template.querySelector('.i2c-readreq').addEventListener('click', () => {
         i2cReadRequest(device).catch(e => `ERROR on i2cReadRequest(): ${e}\n${e.stack}`);
     });
     template.querySelector('.gpio-dreadreq').addEventListener('click', () => {
-        gpioDigitalReadReq(device, 0).catch(e => `ERROR on gpioDigitalReadReq(): ${e}\n${e.stack}`);
+        gpioDigitalReadReq(device,
+          parseInt(template.querySelector('.gpio-dreadreq-port').value, 16),
+        ).catch(e => `ERROR on gpioDigitalReadReq(): ${e}\n${e.stack}`);
     });
     template.querySelector('.gpio-areadreq').addEventListener('click', () => {
-        gpioAnalogReadReq(device, 0).catch(e => `ERROR on gpioAnalogReadReq(): ${e}\n${e.stack}`);
+        gpioAnalogReadReq(device,
+          parseInt(template.querySelector('.gpio-areadreq-port').value, 16),
+        ).catch(e => `ERROR on gpioAnalogReadReq(): ${e}\n${e.stack}`);
     });
-
-
     template.querySelector('.read-buffer-write').addEventListener('click', () => {
-        readReq(device, template.querySelector('.read-buffer-source').value).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
+        readReq(device,
+          parseInt(template.querySelector('.read-buffer-source').value, 16),
+        ).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
     });
-
-
 
     // Tabs
     ['notify', 'write', 'advert'].map(key => {
@@ -320,7 +346,7 @@ function notificationCallback(e) {
     updateSensorValue(e.target.service.device, accelerometerBuffer);
 }
 
-async function refreshValues(device) {
+async function deviceRead(device) {
     const readCmdCharacteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_READ_UUID);
 
@@ -358,23 +384,29 @@ async function readCharacteristic(characteristic) {
 
 
 
-async function writeText(device) {
-    const command = [1, 4, 0x30, 0x31, 0x32, 0x33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+async function writeText(device, text) {
+  let text_byte = [];
+  for(let i = 0; i < text.length; i = i + 1) {
+    text_byte[i] = parseInt(text.substring(i * 2, i * 2 + 2), 16);
+  }
 
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Write text : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
+  const cmd = [1, text.length];
+  const command = cmd.concat(text_byte);
 
-    onScreenLog(`Write text done`);
+  const characteristic = await getCharacteristic(
+        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+  await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+      onScreenLog(`Write text : Error writing ${characteristic.uuid}: ${e}`);
+      throw e;
+  });
+
+  onScreenLog(`Write text done`);
 }
 
 
-async function writeTextControl(device) {
+async function writeTextControl(device, addr_x, addr_y) {
 
-    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
@@ -386,38 +418,6 @@ async function writeTextControl(device) {
     onScreenLog(`Write text control done`);
 }
 
-
-
-async function displayControl(device, clear, addr_x, addr_y) {
-    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, clear, addr_x, addr_y];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Write text control : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function displayPrint(device, text) {
-  let text_byte = [];
-  for(let i = 0; i < 16; i = i + 1) {
-    text_byte[i] = parseInt(text.substring(i * 2, i * 2 + 2), 16);
-  }
-
-  const length = text.length;
-  const header = [1, length];
-  const command = header.concat(text_byte);
-
-  onScreenLog('Write text to OLED : ' + new Uint8Array(command));
-
-  const characteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-  await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-      onScreenLog(`Error writing ${characteristic.uuid}: ${e}`);
-      throw e;
-  });
-}
 
 async function displayClear(device) {
     const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -476,7 +476,16 @@ async function gpioDigitalWrite(device, port, value) {
     });
 }
 
+async function gpioAnalogWrite(device, port, value) {
+    const command = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
 
 async function i2cStartTransaction(device, address) {
     const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
@@ -550,7 +559,7 @@ async function gpioAnalogReadReq(device, port) {
 }
 
 async function readReq(device, cmd) {
-    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, parseInt(cmd, 16)];
+    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);

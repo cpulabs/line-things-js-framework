@@ -521,12 +521,13 @@ unsigned int ioDigitalRead(unsigned pin){
 
 void ioAnalogWrite(int pin, int pwm){
   debugPrint("[BLE]GPIO : write analog value");
-  //
+  analogWrite(pin, pwm);
 }
 
-unsigned int ioAnalogRead(int pin){
+int ioAnalogRead(int pin){
+  int readValue = analogRead(pin);
   debugPrint("[BLE]GPIO : write analog value");
-  //
+  return readValue;
 }
 
 /*********************************************************************************
@@ -571,6 +572,10 @@ void setup() {
 
   // 温度センサの初期化
   temp.init();
+
+  // ADC initialize
+	analogReference(AR_VDD4);		  //ADC reference = VDD
+	analogReadResolution(10);			//ADC 10bit
 
   bleConfigure(0);
   debugPrint("BLE transmitter power : 0dBm");

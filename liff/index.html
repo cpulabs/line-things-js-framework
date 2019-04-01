@@ -160,7 +160,30 @@
                       <option value="0">IN</option>
                       <option value="1">OUT</option>
                     </select>
-                    <button type="button" class="gpio-dwrite btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO value </button>
+                    <button type="button" class="gpio-dwrite btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO digital value </button>
+                  </p>
+
+
+                  <p>
+                    <select class="gpio-awrite-port form-control" id="gpioawriteport">
+                      <option value="0" selected="selected">-Port-</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                    </select>
+                    <select class="gpio-awrite-value form-control" id="gpioawritevalue">
+                      <option value="0" selected="selected">-Value-</option>
+                      <option value="0">0</option>
+                      <option value="127">127</option>
+                      <option value="255">255</option>
+                    </select>
+                    <button type="button" class="gpio-awrite btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO analog value </button>
                   </p>
 
                   <p>
@@ -243,7 +266,7 @@
 
                 <p>
                   <div class="col text-center">
-                    <button type="button" class="refresh-value btn btn-primary"><i class="fas fa-sync-alt"></i> read </button>
+                    <button type="button" class="device-read btn btn-primary"><i class="fas fa-sync-alt"></i> read </button>
                   </div>
                 </p>
 
