@@ -185,6 +185,9 @@ function initializeCardForDevice(device) {
 
 
 
+    template.querySelector('.read-buffer-write').addEventListener('click', () => {
+        readReq(device, 0).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
+    });
 
 
 
@@ -441,6 +444,18 @@ async function gpioPinMode(device, port, value) {
 
 async function gpioDigitalWrite(device, port, value) {
     const command = [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+
+
+async function readReq(device, cmd) {
+    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);

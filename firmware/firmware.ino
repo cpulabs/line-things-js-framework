@@ -382,7 +382,7 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     case 14:
       g_gpio_ar_port = data[17];
       break;
-    case 15:
+    case 32:
       g_read_action.changed = 1;
       g_read_action.cmd = data[17];
       break;
