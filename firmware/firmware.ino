@@ -697,6 +697,7 @@ void loop() {
     	blesv_devboard_read.write(data, sizeof(data));
       g_read_action.changed = 0;
 
+      debugPrint("[BLE]Set read pointer");
     }
 
   }
