@@ -164,15 +164,29 @@ function initializeCardForDevice(device) {
     template.querySelector('.textctrl-write').addEventListener('click', () => {
         writeTextControl(device).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
     });
-
     template.querySelector('.text-write').addEventListener('click', () => {
         writeText(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
-
-
     template.querySelector('.text-clear').addEventListener('click', () => {
         displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
+    template.querySelector('.led-write').addEventListener('click', () => {
+        ledWrite(device, 0, 0).catch(e => `ERROR on writeLed(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.buzzer-write').addEventListener('click', () => {
+        buzzerControl(device, 0).catch(e => `ERROR on buzzerControl(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.gpio-direction').addEventListener('click', () => {
+        gpioPinMode(device, 0, 0).catch(e => `ERROR on gpioPinMode(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.gpio-dwrite').addEventListener('click', () => {
+        gpioDigitalWrite(device, 0, 0).catch(e => `ERROR on gpioDirigtalWrite(): ${e}\n${e.stack}`);
+    });
+
+
+
+
+
 
     // Tabs
     ['notify', 'write', 'advert'].map(key => {

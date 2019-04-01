@@ -105,6 +105,20 @@
                   </p>
                 </div>
 
+
+
+                <div class="col text-center">
+                  <h5>Buzzer</h5>
+                  <p>
+                    <select class="buzzer-control form-control" id="buzzercontrol" name="buzzercontrol">
+                      <option value="-1" selected="selected">-Select-</option>
+                      <option value="0">OFF</option>
+                      <option value="1">ON</option>
+                    </select>
+                    <button type="button" class="buzzer-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Buzzer Write </button>
+                  </p>
+                </div>
+
                 <div class="col text-center">
                   <h5>GPIO</h5>
                   <p>
@@ -146,7 +160,7 @@
                       <option value="0">IN</option>
                       <option value="1">OUT</option>
                     </select>
-                    <button type="button" class="gpio-direction btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO value </button>
+                    <button type="button" class="gpio-dwrite btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO value </button>
                   </p>
 
                 </div>
@@ -169,8 +183,8 @@
 
 
                 <hr>
-
                 <p>
+
                   <div class="col text-center">
                     <button type="button" class="refresh-value btn btn-primary"><i class="fas fa-sync-alt"></i> request recieve data</button>
                   </div>
@@ -200,7 +214,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -233,5 +246,8 @@
   <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
   <script src="liff-starter.js?id=20190111_1547196772"></script>
 </body>
+
+
+
 
 </html>
