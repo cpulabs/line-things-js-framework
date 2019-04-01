@@ -392,7 +392,7 @@ async function readCharacteristic(characteristic) {
 async function writeText(device, text) {
   let text_byte = [];
   for(let i = 0; i < text.length; i = i + 1) {
-    text_byte[i] = parseInt(text.substring(i * 2, i * 2 + 2), 16);
+    text_byte[i] = text.substring(i, i+1);//parseInt(text.substring(i, i+1), 16);
   }
 
   const cmd = [1, text.length];
