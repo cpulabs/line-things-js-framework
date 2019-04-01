@@ -149,16 +149,12 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.setuuid').addEventListener('click', () => {
-
         writeAdvertuuid(device, template.querySelector('.uuid_text').value).catch(e => onScreenLog(`ERROR on writeAdvertuuid(): ${e}\n${e.stack}`));
     });
-
-
 
     template.querySelector('.device-read').addEventListener('click', () => {
         deviceRead(device).catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
     });
-
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
         writeTextControl(device,
@@ -166,79 +162,95 @@ function initializeCardForDevice(device) {
           parseInt(template.querySelector('.displayaddress_y').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.textsize-write').addEventListener('click', () => {
         writeFontSize(device,
             parseInt(template.querySelector('.textsize').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.text-write').addEventListener('click', () => {
         writeText(device,
           template.querySelector('.display_text').value
         ).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.text-clear').addEventListener('click', () => {
         displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.led-write').addEventListener('click', () => {
         ledWrite(device,
           parseInt(template.querySelector('.led-port').value, 16),
           parseInt(template.querySelector('.led-value').value, 16)
         ).catch(e => `ERROR on writeLed(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.buzzer-write').addEventListener('click', () => {
         buzzerControl(device,
           parseInt(template.querySelector('.buzzer-control').value, 16)
         ).catch(e => `ERROR on buzzerControl(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.gpio-direction').addEventListener('click', () => {
         gpioPinMode(device,
           parseInt(template.querySelector('.gpio-direction-port').value, 16),
           parseInt(template.querySelector('.gpio-direction-dir').value, 16)
         ).catch(e => `ERROR on gpioPinMode(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.gpio-dwrite').addEventListener('click', () => {
         gpioDigitalWrite(device,
           parseInt(template.querySelector('.gpio-digitalwrite-port').value, 16),
           parseInt(template.querySelector('.gpio-digitalwrite-value').value, 16)
         ).catch(e => `ERROR on gpioDirigtalWrite(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.gpio-awrite').addEventListener('click', () => {
         gpioAnalogWrite(device,
           parseInt(template.querySelector('.gpio-awrite-port').value, 16),
           parseInt(template.querySelector('.gpio-awrite-value').value, 16)
         ).catch(e => `ERROR on gpioAnalogWrite(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.i2c-start').addEventListener('click', () => {
         i2cStartTransaction(device,
           parseInt(template.querySelector('.i2c-start-addr').value, 16),
         ).catch(e => `ERROR on i2cStartTransaction(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.i2c-write').addEventListener('click', () => {
         i2cWrite(device,
           parseInt(template.querySelector('.i2c-write-data').value, 16),
         ).catch(e => `ERROR on i2cWrite(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.i2c-stop').addEventListener('click', () => {
         i2cStopTransaction(device).catch(e => `ERROR on i2cStopTransaction(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.i2c-request').addEventListener('click', () => {
         i2cRequestFrom(device,
           parseInt(template.querySelector('.i2c-request-addr').value, 16),
         ).catch(e => `ERROR on i2cRequestFrom(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.i2c-readreq').addEventListener('click', () => {
         i2cReadRequest(device).catch(e => `ERROR on i2cReadRequest(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.gpio-dreadreq').addEventListener('click', () => {
         gpioDigitalReadReq(device,
           parseInt(template.querySelector('.gpio-dreadreq-port').value, 16),
         ).catch(e => `ERROR on gpioDigitalReadReq(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.gpio-areadreq').addEventListener('click', () => {
         gpioAnalogReadReq(device,
           parseInt(template.querySelector('.gpio-areadreq-port').value, 16),
         ).catch(e => `ERROR on gpioAnalogReadReq(): ${e}\n${e.stack}`);
     });
+
     template.querySelector('.read-buffer-write').addEventListener('click', () => {
         readReq(device,
           parseInt(template.querySelector('.read-buffer-source').value, 16),
@@ -246,7 +258,7 @@ function initializeCardForDevice(device) {
     });
 
     // Tabs
-    ['notify', 'write', 'advert'].map(key => {
+    ['write', 'read', 'advert'].map(key => {
         const tab = template.querySelector(`#nav-${key}-tab`);
         const nav = template.querySelector(`#nav-${key}`);
 
@@ -386,8 +398,6 @@ async function readCharacteristic(characteristic) {
         throw 'Read value is empty?';
     }
 }
-
-
 
 async function writeText(device, text) {
   let text_byte = [];
