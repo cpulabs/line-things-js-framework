@@ -1,6 +1,7 @@
 /**
  * User sample firmware for LINE Things development board
- * リポジトリの /liff-app/linethings-dev-user にある LIFF と組み合わせて利用
+ * このサンプルを用いるとLIFFからボード上のデバイスやGPIO、Groveコネクタに接続されているデバイスを操作することができます。
+ * ファームウェアはこちらを変更せずに使用して、LIFFのみでデバイスの制御を行うことができます。
  */
 
 #include <bluefruit.h>
@@ -11,6 +12,9 @@
 #include <SparkFun_MMA8452Q.h>
 #include <linethings_temp.h>
 
+// デバッグのEnable
+#define USER_DEBUG        //Debugを無効にするにはコメントアウトを外す
+
 // BLE Service UUID
 #define USER_SERVICE_UUID "981b0d79-2855-44f4-aa14-3c34012a3dd3"
 #define USER_CHARACTERISTIC_NOTIFY_UUID "e10d036f-b248-4845-adff-d8f73a85321b"
@@ -19,7 +23,7 @@
 #define PSDI_SERVICE_UUID "e625601e-9e55-4597-a598-76018a0d293d"
 #define PSDI_CHARACTERISTIC_UUID "26e2b12b-85f0-4f3f-9fdd-91d114270e6e"
 
-#define BLE_DEV_NAME "LINE Things JS control"
+#define BLE_DEV_NAME "LINE Things JS Framework"
 
 #define SW1 29
 #define SW2 28
@@ -72,10 +76,11 @@ void buzzerStop() {
 /*********************************************************************************
 * Debug print
 *********************************************************************************/
-
 void debugPrint(String text){
+#ifdef USER_DEBUG
   text = "[DBG]" + text;
   Serial.println(text);
+#endif
 }
 
 
@@ -318,8 +323,6 @@ volatile bleReadAction g_read_action;
 
 void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t offset) {
   byte cmd = data[0];
-
-
   switch(cmd){
     case 0 :
       g_display.changed = 1;
@@ -330,7 +333,7 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
       g_display_text.changed = 1;
       g_display_text.length = data[1];
       for(int i = 0; i < 16; i++){
-        g_display_text.text[i] = data[1 + i];
+        g_display_text.text[i] = data[2 + i];
       }
       break;
     case 2:
@@ -424,13 +427,8 @@ void displaySetConfigure(int addr_x, int addr_y){
   display.setCursor(addr_x, addr_y);
 }
 
-
 void displayWrite(int fontsize, int length, char ch[16]){
   debugPrint("[BLE]DISP : write text");
-  Serial.println(ch[0]);
-  Serial.println(ch[1]);
-  Serial.println(ch[2]);
-  
   display.setTextSize(fontsize);
   for(int i = 0; i < length; i++){
     display.print(ch[i]);
@@ -475,7 +473,6 @@ float tempRead(){
   debugPrint("[BLE]Temperature : read value");
   return temp.read();
 }
-
 
 void accelRead(float data[3]){
   debugPrint("[BLE]Accel : read value");
@@ -707,11 +704,9 @@ void loop() {
         default:
           break;
       }
-
       //Set BLE Register
     	blesv_devboard_read.write(data, sizeof(data));
       g_read_action.changed = 0;
     }
-
   }
 }
