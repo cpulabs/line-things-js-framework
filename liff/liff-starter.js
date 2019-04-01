@@ -186,7 +186,7 @@ function initializeCardForDevice(device) {
 
 
     template.querySelector('.read-buffer-write').addEventListener('click', () => {
-        readReq(device, 0).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
+        readReq(device, template.querySelector('.read-buffer-source').value).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
     });
 
 
@@ -455,7 +455,7 @@ async function gpioDigitalWrite(device, port, value) {
 
 
 async function readReq(device, cmd) {
-    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
+    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, parseInt(cmd, 16)];
 
     const characteristic = await getCharacteristic(
           device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
