@@ -185,6 +185,29 @@ function initializeCardForDevice(device) {
 
 
 
+    template.querySelector('.i2c-start').addEventListener('click', () => {
+        i2cStartTransaction(device, 0).catch(e => `ERROR on i2cStartTransaction(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.i2c-write').addEventListener('click', () => {
+        i2cWrite(device, 0).catch(e => `ERROR on i2cWrite(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.i2c-stop').addEventListener('click', () => {
+        i2cStopTransaction(device).catch(e => `ERROR on i2cStopTransaction(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.i2c-request').addEventListener('click', () => {
+        i2cRequestFrom(device, 0).catch(e => `ERROR on i2cRequestFrom(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.i2c-readreq').addEventListener('click', () => {
+        i2cReadRequest(device).catch(e => `ERROR on i2cReadRequest(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.gpio-dreadreq').addEventListener('click', () => {
+        gpioDigitalReadReq(device, 0).catch(e => `ERROR on gpioDigitalReadReq(): ${e}\n${e.stack}`);
+    });
+    template.querySelector('.gpio-areadreq').addEventListener('click', () => {
+        gpioAnalogReadReq(device, 0).catch(e => `ERROR on gpioAnalogReadReq(): ${e}\n${e.stack}`);
+    });
+
+
     template.querySelector('.read-buffer-write').addEventListener('click', () => {
         readReq(device, template.querySelector('.read-buffer-source').value).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
     });
@@ -453,6 +476,78 @@ async function gpioDigitalWrite(device, port, value) {
     });
 }
 
+
+
+async function i2cStartTransaction(device, address) {
+    const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error start transaction ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function i2cWrite(device, value) {
+    const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error write data ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function i2cStopTransaction(device, address) {
+    const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error stop transaction ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function i2cRequestFrom(device, address) {
+    const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error request from ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function i2cReadRequest(device) {
+    const command = [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error read request ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function gpioDigitalReadReq(device, port) {
+    const command = [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`GPIO : Error digital read request ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
+async function gpioAnalogReadReq(device, port) {
+    const command = [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`I2C : Error analog read request ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
 
 async function readReq(device, cmd) {
     const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, parseInt(cmd, 16)];

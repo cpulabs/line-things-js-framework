@@ -663,6 +663,7 @@ void loop() {
     //BLE Read action
     if(g_read_action.changed){
       byte data[4] = {0, 0, 0, 0};
+      debugPrint("[BLE]Set read pointer : " + String(g_read_action.cmd));
       switch(g_read_action.cmd){
         case 0:
           data[2] = swGetValue(2);
@@ -696,8 +697,6 @@ void loop() {
       //Set BLE Register
     	blesv_devboard_read.write(data, sizeof(data));
       g_read_action.changed = 0;
-
-      debugPrint("[BLE]Set read pointer");
     }
 
   }

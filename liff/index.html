@@ -163,7 +163,67 @@
                     <button type="button" class="gpio-dwrite btn btn-secondary"><i class="fas fa-toggle-off"></i> Write GPIO value </button>
                   </p>
 
+                  <p>
+                    <select class="gpio-dreadreq-port form-control" id="gpiodreadreqport">
+                      <option value="0" selected="selected">-Port-</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                    </select>
+                    <button type="button" class="gpio-dreadreq btn btn-secondary"><i class="fas fa-toggle-off"></i> Digital Read req </button>
+                  </p>
+
+                  <p>
+                    <select class="gpio-areadreq-port form-control" id="gpioareadreqport">
+                      <option value="0" selected="selected">-Port-</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                    </select>
+                    <button type="button" class="gpio-areadreq btn btn-secondary"><i class="fas fa-toggle-off"></i> Analog Read req </button>
+                  </p>
                 </div>
+
+                <div class="col text-center">
+                  <h5>I2C</h5>
+                  <p>
+                    <input type="" class="form-control i2c-start-addr" id="uuidtext" placeholder="address">
+                    <button type="button" class="i2c-start btn btn-secondary"><i class="fas fa-toggle-off"></i> Start </button>
+                  </p>
+
+                  <p>
+                    <input type="" class="form-control i2c-write-value" id="uuidtext" placeholder="value">
+                    <button type="button" class="i2c-write btn btn-secondary"><i class="fas fa-toggle-off"></i> Write </button>
+                  </p>
+
+                  <p>
+                    <button type="button" class="i2c-stop btn btn-secondary"><i class="fas fa-toggle-off"></i> Stop </button>
+                  </p>
+
+                  <p>
+                    <input type="" class="form-control i2c-request-addr" id="uuidtext" placeholder="value">
+                    <button type="button" class="i2c-request btn btn-secondary"><i class="fas fa-toggle-off"></i> Request </button>
+                  </p>
+
+                  <p>
+                    <button type="button" class="i2c-readreq btn btn-secondary"><i class="fas fa-toggle-off"></i> Read-Req </button>
+                  </p>
+                </div>
+
+
+
 
                 <div class="col text-center">
                   <h5>Read from device</h5>
