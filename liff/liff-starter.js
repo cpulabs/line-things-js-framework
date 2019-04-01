@@ -166,6 +166,11 @@ function initializeCardForDevice(device) {
           parseInt(template.querySelector('.displayaddress_y').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
     });
+    template.querySelector('.textsize-write').addEventListener('click', () => {
+        writeFontSize(device,
+            parseInt(template.querySelector('.textsize').value, 16)
+        ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
+    });
     template.querySelector('.text-write').addEventListener('click', () => {
         writeText(device,
           template.querySelector('.display_text').value
@@ -405,7 +410,6 @@ async function writeText(device, text) {
 
 
 async function writeTextControl(device, addr_x, addr_y) {
-
     const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
 
     const characteristic = await getCharacteristic(
@@ -418,6 +422,16 @@ async function writeTextControl(device, addr_x, addr_y) {
     onScreenLog(`Write text control done`);
 }
 
+async function writeFontSize(device, size) {
+    const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
+
+    const characteristic = await getCharacteristic(
+          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
+    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
+        onScreenLog(`Display : Error write font size ${characteristic.uuid}: ${e}`);
+        throw e;
+    });
+}
 
 async function displayClear(device) {
     const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];

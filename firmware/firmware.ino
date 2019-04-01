@@ -237,6 +237,7 @@ typedef struct ble_display_text_action{
 volatile bleDispAction g_display;
 volatile int g_display_clear = 0;
 volatile bleDispTextAction g_display_text;
+volatile int g_display_fontsize = 0;
 
 typedef struct ble_i2c_action{
   byte changed = 0;
@@ -293,6 +294,8 @@ volatile bleReadAction g_read_action;
  *    Payload : don't care(16Byte), port(1Byte)
  *  CMD14 : Set port for read analog value
  *    Payload : don't care(16Byte), port(1Byte)
+ *  CMD15 : Display write font size
+ *    Payload : don't care(16Byte), fontsize(1Byte)
  *  CMD32 : Set BLE Read data
  *    Payload : don't care(16Byte), Read CMD(1Byte)
  *
@@ -382,6 +385,9 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     case 14:
       g_gpio_ar_port = data[17];
       break;
+    case 15:
+      g_display_fontsize = data[17];
+      break;
     case 32:
       g_read_action.changed = 1;
       g_read_action.cmd = data[17];
@@ -411,18 +417,18 @@ void displayClear(){
   display.display();       // ディスプレイのバッファを表示
 }
 
-void displaySetConfigure(int font, int addr_x, int addr_y){
+void displaySetConfigure(int addr_x, int addr_y){
   debugPrint("[BLE]DISP : write configure");
   display.clearDisplay();       // ディスプレイのバッファを初期化
-  display.setTextSize(font);
   display.setTextColor(WHITE);  // Color White
   display.setCursor(addr_x, addr_y);
 }
 
 
-void displayWrite(int length, char ch[16]){
+void displayWrite(int fontsize, int length, char ch[16]){
   debugPrint("[BLE]DISP : write text");
 
+  display.setTextSize(fontsize);
   for(int i = 0; i < length; i++){
     display.print(ch[i]);
   }
@@ -622,7 +628,7 @@ void loop() {
     }
     //Display Control
     if(g_display.changed){
-      displaySetConfigure(2, g_display.addr_x, g_display.addr_y);
+      displaySetConfigure(g_display.addr_x, g_display.addr_y);
       g_display.changed = 0;
     }
     //Display Write text
@@ -631,7 +637,7 @@ void loop() {
       for(int i = 0; i < 16; i++){
         text[i] = g_display_text.text[i];
       }
-      displayWrite(g_display_text.length, text);
+      displayWrite(g_display_fontsize, g_display_text.length, text);
       g_display_text.changed = 0;
     }
     //Display Clear
