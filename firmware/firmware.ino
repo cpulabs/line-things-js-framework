@@ -427,7 +427,10 @@ void displaySetConfigure(int addr_x, int addr_y){
 
 void displayWrite(int fontsize, int length, char ch[16]){
   debugPrint("[BLE]DISP : write text");
-
+  Serial.println(ch[0]);
+  Serial.println(ch[1]);
+  Serial.println(ch[2]);
+  
   display.setTextSize(fontsize);
   for(int i = 0; i < length; i++){
     display.print(ch[i]);

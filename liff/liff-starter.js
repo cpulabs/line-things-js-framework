@@ -400,13 +400,17 @@ async function readCharacteristic(characteristic) {
 }
 
 async function writeText(device, text) {
-  let text_byte = [];
-  for(let i = 0; i < text.length; i = i + 1) {
-    text_byte[i] = text.substring(i, i+1);//parseInt(text.substring(i, i+1), 16);
+  let ch_array = text.split("");
+  for(let i = 0; i < 16; i = i + 1){
+    if(i >= text.length){
+      ch_array[i] = 0;
+    }else{
+      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
+    }
   }
 
   const cmd = [1, text.length];
-  const command = cmd.concat(text_byte);
+  const command = cmd.concat(ch_array);
 
   const characteristic = await getCharacteristic(
         device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
