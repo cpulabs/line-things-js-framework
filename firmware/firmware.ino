@@ -233,14 +233,14 @@ void bleConnectEvent(uint16_t conn_handle) {
   Bluefruit.Gap.getPeerName(conn_handle, central_name, sizeof(central_name));
 
   Serial.print("Connected from ");
-  Serial.println(central_name);
+  debugPrint(central_name);
 }
 
 // Event for disconnect BLE central
 void bleDisconnectEvent(uint16_t conn_handle, uint8_t reason) {
   (void)reason;
   (void)conn_handle;
-  Serial.println("BLE central disconnect");
+  debugPrint("BLE central disconnect");
 }
 
 volatile int g_flag_user_write = 0;
@@ -539,7 +539,7 @@ void configFileWrite(uint8_t binUuid[]) {
     }
     file.close();
   } else {
-    Serial.println("Write UUID : Failed!");
+    debugPrint("Write UUID : Failed!");
   }
 }
 
@@ -759,7 +759,7 @@ void setup() {
     strUUID2Bytes(DEFAULT_ADVERTISE_UUID, uuid128);
     configFileWrite(uuid128);
     String message = "Set advertising UUID to default.";
-    Serial.println(message);
+    debugPrint(message);
     display.clearDisplay();       // ディスプレイのバッファを初期化
     display.setTextSize(1);       // テキストサイズ 1
     display.setTextColor(WHITE);  // Color White
@@ -794,12 +794,6 @@ void setup() {
   }
   bleStartAdvertising();
 
-  // BJE JS mode で起動するか選択
-  if(!digitalRead(SW2)){
-    g_js_control_mode_flag = 1;
-    return;
-  }
-
   // ディスプレイ表示タイミングを作るタイマー
   timerDisplay.begin(500, displayUpdateEvent);
   timerDisplay.start();
@@ -811,6 +805,12 @@ void setup() {
   // SW 割り込みを設定
   attachInterrupt(SW1, sw1ChangedEvent, CHANGE);
   attachInterrupt(SW2, sw2ChangedEvent, CHANGE);
+
+  // BJE JS mode で起動するか選択
+  if(!digitalRead(SW2)){
+    g_js_control_mode_flag = 1;
+    return;
+  }
 }
 
 
@@ -843,9 +843,9 @@ void enterJsControlMode(){
   display.setTextSize(1);       // テキストサイズ 1
   display.setTextColor(WHITE);  // Color White
   display.setCursor(0, 10);     // X=0, Y=10
-  display.println("JS control mode enable.");
+  display.println("JS control mode");
   display.display();            // ディスプレイを更新
-  delay(5000);
+  debugPrint("Enter to JS control mode");
 }
 
 void bleJsLoop(){
@@ -999,7 +999,7 @@ void loop() {
         String errorMsg =
             "[ERROR] : Write new advertising UUID, Hash isn't match. "
             "Please retry it.";
-        Serial.println(errorMsg);
+        debugPrint(errorMsg);
         display.clearDisplay();       // ディスプレイのバッファを初期化
         display.setTextSize(1);       // テキストサイズ 1
         display.setTextColor(WHITE);  // Color White
@@ -1013,9 +1013,9 @@ void loop() {
       }
       configFileWrite(blesv_user_uuid);
       configFileRead();
-      Serial.println("BLE advertising uuid changed from LIFF.");
-      Serial.println("Enable new uuid after restart MPU.");
-      Serial.println("Please push reset button.");
+      debugPrint("BLE advertising uuid changed from LIFF.");
+      debugPrint("Enable new uuid after restart MPU.");
+      debugPrint("Please push reset button.");
       display.clearDisplay();       // ディスプレイのバッファを初期化
       display.setTextSize(1);       // テキストサイズ 1
       display.setTextColor(WHITE);  // Color White
