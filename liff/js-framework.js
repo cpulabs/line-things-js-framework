@@ -200,6 +200,24 @@ class ThingsConn {
       });
   }
 
+  async function deviceRead(device) {
+      const readCmdCharacteristic = await getCharacteristic(
+          device, this.svUuid, this.rdUuid);
+
+      const valueBuffer = await readCharacteristic(readCmdCharacteristic).catch(e => {
+          onScreenLog('Read Value  : ' + "error");
+          return null;
+      });
+
+      /*
+      if (accelerometerBuffer !== null) {
+          updateSensorValue(device, accelerometerBuffer);
+      }
+      */
+      onScreenLog('Read Value  : ' + valueBuffer);
+
+  }
+
 
 }
 
