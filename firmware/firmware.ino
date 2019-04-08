@@ -217,13 +217,11 @@ void bleSetupServiceDevice() {
 	blesv_devboard_io_read.setPermission(SECMODE_ENC_NO_MITM, SECMODE_ENC_NO_MITM);
 	blesv_devboard_io_read.setFixedLen(4);
 	blesv_devboard_io_read.begin();
-
 }
 
 void bleSetupServiceUser() {
   blesv_user.begin();
 }
-
 
 // Event for connect BLE central
 void bleConnectEvent(uint16_t conn_handle) {
@@ -316,7 +314,6 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
     g_js_control_mode_flag = 1;
   }
 }
-
 
 typedef struct ble_io_action{
   byte changed = 0;
@@ -503,7 +500,6 @@ void bleIoWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16
   }
   debugPrint("[BLE]Write event done");
 }
-
 
 /*********************************************************************************
 * Timer
@@ -700,11 +696,9 @@ int ioAnalogRead(int pin){
 void setup() {
   // Serial通信初期化
   Serial.begin(9600);
-
   //スイッチを入力に設定
   pinMode(SW1, INPUT_PULLUP);
   pinMode(SW2, INPUT_PULLUP);
-
   // LEDを出力に設定
   pinMode(LED_DS2, OUTPUT);
   pinMode(LED_DS3, OUTPUT);
@@ -733,25 +727,19 @@ void setup() {
   digitalWrite(GPIO14, 0);
   digitalWrite(GPIO15, 0);
   digitalWrite(GPIO16, 0);
-
   // ディスプレイの初期化
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // ディスプレイの表示に必要な電圧を生成, アドレスは 0x3C
   display.clearDisplay();  // ディスプレイのバッファを初期化
   display.display();       // ディスプレイのバッファを表示
-
   // 加速度センサの初期化
   accel.init(SCALE_2G);
-
   // 温度センサの初期化
   temp.init();
-
   // ADC initialize
   analogReference(AR_VDD4);		  //ADC reference = VDD
   analogReadResolution(10);			//ADC 10bit
-
   // Load advertising UUID config
   InternalFS.begin();
-
   // 起動時に SW1 を押しっぱなしか、設定ファイルが見つからない場合は
   // Advertise packet UUID をデフォルトに初期化する
   if (!digitalRead(SW1) || configFileExist() == -1) {
@@ -771,12 +759,10 @@ void setup() {
 
   // File.open(UUID_FILENAME, FILE_READ);
   configFileRead();
-
   // UUIDが初期状態のものであれば出力を最低にする
   uint8_t uuid128[16];
   strUUID2Bytes(DEFAULT_ADVERTISE_UUID, uuid128);
   int cmpUuid = compareUuid(uuid128, blesv_user_uuid);
-
   // BLE の設定
   if ( cmpUuid == 0 ){
     // Accepted values are: -40, -30, -20, -16, -12, -8, -4, 0, 4
@@ -797,15 +783,12 @@ void setup() {
   // ディスプレイ表示タイミングを作るタイマー
   timerDisplay.begin(500, displayUpdateEvent);
   timerDisplay.start();
-
   // BLE でセントラルにデータを送りつけるタイミングを作るタイマー
   timerNotify.begin(800, bleNotifyEvent);
   timerNotify.start();
-
   // SW 割り込みを設定
   attachInterrupt(SW1, sw1ChangedEvent, CHANGE);
   attachInterrupt(SW2, sw2ChangedEvent, CHANGE);
-
   // BJE JS mode で起動するか選択
   if(!digitalRead(SW2)){
     g_js_control_mode_flag = 1;
@@ -813,12 +796,10 @@ void setup() {
   }
 }
 
-
 void enterJsControlMode(){
   // Software Timerをストップ
   timerDisplay.stop();
   timerNotify.stop();
-
   // LEDを出力に設定
   pinMode(LED_DS2, OUTPUT);
   pinMode(LED_DS3, OUTPUT);

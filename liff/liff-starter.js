@@ -157,10 +157,16 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
+        /*
         writeTextControl(device,
           parseInt(template.querySelector('.displayaddress_x').value, 16),
           parseInt(template.querySelector('.displayaddress_y').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
+        */
+        var writetext = new ThingsConn(USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID, USER_CHARACTERISTIC_READ_UUID);
+        writetext.writeTextControl(device, 2, 2);
+
+
     });
 
     template.querySelector('.textsize-write').addEventListener('click', () => {
