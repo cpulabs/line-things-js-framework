@@ -14,15 +14,15 @@ class ThingsConn {
 
     async enterBleioMode(){
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-        this.deviceWrite(command, 'control');
+        this.writeCharacteristic(command, 'control');
     }
 
     async enterDemoMode(){
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this.deviceWrite(command, 'control');
+        this.writeCharacteristic(command, 'control');
     }
 
-    async deviceWrite(data, mode){
+    async writeCharacteristic(data, mode){
         let uuid;
         if(mode == 'control'){
             uuid = this.wrUuid;
@@ -53,7 +53,7 @@ class ThingsConn {
         }
         const header = [1, 0, 0, hash];
         const command = header.concat(uuid_byte);
-        this.deviceWrite(command, 'control');
+        this.writeCharacteristic(command, 'control');
     }
 
     async writeText(text) {
@@ -67,86 +67,86 @@ class ThingsConn {
         }
         const cmd = [1, text.length];
         const command = cmd.concat(ch_array);
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async writeTextControl(addr_x, addr_y) {
         const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async writeFontSize(size) {
         const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async displayClear(device) {
         const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async ledWrite(port, value) {
         const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async ledWriteByte(value) {
         const command = [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async buzzerControl(value) {
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async gpioPinMode(port, value) {
         const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async gpioDigitalWrite(port, value) {
         const command = [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async gpioAnalogWrite(port, value) {
         const command = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async i2cStartTransaction(address) {
         const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async i2cWrite(value) {
         const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async i2cStopTransaction(address) {
         const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async i2cRequestFrom(address) {
         const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async i2cReadRequest(device) {
         const command = [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async gpioDigitalReadReq(port) {
         const command = [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
     async gpioAnalogReadReq(port) {
         const command = [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
-        this.deviceWrite(command, 'io');
+        this.writeCharacteristic(command, 'io');
     }
 
     async readReq(cmd) {
         const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
-        this.deviceWrite(command, io);
+        this.writeCharacteristic(command, io);
     }
 
 
@@ -176,5 +176,19 @@ class ThingsConn {
         } else {
             throw 'Read value is empty?';
         }
+    }
+
+
+    async function getCharacteristic(device, serviceId, characteristicId) {
+        const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
+            flashSDKError(e);
+            throw e;
+        });
+        const characteristic = await service.getCharacteristic(characteristicId).catch(e => {
+            flashSDKError(e);
+            throw e;
+        });
+        onScreenLog(`Got characteristic ${serviceId} ${characteristicId} ${device.id}`);
+        return characteristic;
     }
 }
