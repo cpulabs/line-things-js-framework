@@ -8,10 +8,6 @@ class ThingsConn {
         this.rdIoUuid = readIoUuid;
     }
 
-    async sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     async enterBleioMode(){
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
         this.writeCharacteristic(command, 'control');
@@ -21,27 +17,6 @@ class ThingsConn {
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.writeCharacteristic(command, 'control');
     }
-
-    async writeCharacteristic(data, mode){
-        let uuid;
-        if(mode == 'control'){
-            uuid = this.wrUuid;
-        }else if(mode == 'io'){
-            uuid = this.wrIoUuid;
-        }else{
-          return;
-        }
-
-        const characteristic = await this.getCharacteristic(
-              this.device, this.svUuid, uuid);
-        await characteristic.writeValue(new Uint8Array(data)).catch(e => {
-            onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
-            throw e;
-        });
-
-        await this.sleep(10);
-    }
-
 
     async writeAdvertUuid(uuid) {
         const tx_uuid = uuid.replace(/-/g, '');
@@ -164,6 +139,10 @@ class ThingsConn {
         return valueBuffer;
     }
 
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async readCharacteristic(characteristic) {
         const response = await characteristic.readValue().catch(e => {
             onScreenLog(`Error reading ${characteristic.uuid}: ${e}`);
@@ -178,6 +157,25 @@ class ThingsConn {
         }
     }
 
+    async writeCharacteristic(data, mode){
+        let uuid;
+        if(mode == 'control'){
+            uuid = this.wrUuid;
+        }else if(mode == 'io'){
+            uuid = this.wrIoUuid;
+        }else{
+            return;
+        }
+
+        const characteristic = await this.getCharacteristic(
+              this.device, this.svUuid, uuid);
+        await characteristic.writeValue(new Uint8Array(data)).catch(e => {
+            onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
+            throw e;
+        });
+
+        await this.sleep(10);
+    }
 
     async getCharacteristic(device, serviceId, characteristicId) {
         const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
