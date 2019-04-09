@@ -124,6 +124,18 @@ function connectDevice(device) {
         device.gatt.connect().then(() => {
             updateConnectionStatus(device, 'connected');
             connectingUUIDSet.delete(device.id);
+
+            const things = new ThingsConn(
+                device,
+                USER_SERVICE_UUID,
+                USER_CHARACTERISTIC_WRITE_UUID,
+                USER_CHARACTERISTIC_WRITE_IO_UUID,
+                USER_CHARACTERISTIC_READ_IO_UUID
+            );
+
+            setup(things);
+            loop(things);
+
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
@@ -132,6 +144,27 @@ function connectDevice(device) {
         });
     }
 }
+
+function setup(){
+    things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
+    things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
+    things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
+    things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
+}
+
+function loop(){
+  sleep(1000);
+  things.ledWrite(2, 0).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(3, 0).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(4, 0).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(5, 0).catch(e => `error: ${e}\n${e.stack}`);
+  sleep(1000);
+  things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
+  things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
+}
+
 
 // Setup device information card
 function initializeCardForDevice(device) {
