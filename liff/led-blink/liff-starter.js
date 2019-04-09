@@ -156,7 +156,7 @@ function setup(things){
 }
 
 function loop(things){
-  for(;;){
+  while(true){
     things.ledWrite(2, 0).catch(e => `error: ${e}\n${e.stack}`);
     things.ledWrite(3, 0).catch(e => `error: ${e}\n${e.stack}`);
     things.ledWrite(4, 0).catch(e => `error: ${e}\n${e.stack}`);
