@@ -8,6 +8,10 @@ class ThingsConn {
         this.rdIoUuid = readIoUuid;
     }
 
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async deviceWrite(data, mode){
         let uuid;
         if(mode == 'control'){
@@ -24,6 +28,8 @@ class ThingsConn {
             onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
             throw e;
         });
+
+        await this.sleep(10);
     }
 
 
@@ -71,7 +77,7 @@ class ThingsConn {
 
     async ledWrite(port, value) {
         const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        await this.deviceWrite(command, 'io');
+        this.deviceWrite(command, 'io');
     }
 
     async buzzerControl(value) {
