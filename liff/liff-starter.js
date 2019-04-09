@@ -142,7 +142,7 @@ function initializeCardForDevice(device) {
     template.querySelector('.card > .card-header > .device-name').innerText = device.name;
 
     var things = new ThingsConn(USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID, USER_CHARACTERISTIC_READ_UUID);
-    
+
 
     // Device disconnect button
     template.querySelector('.device-disconnect').addEventListener('click', () => {
@@ -181,6 +181,7 @@ function initializeCardForDevice(device) {
           template.querySelector('.display_text').value
         ).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
+    
 
     template.querySelector('.text-clear').addEventListener('click', () => {
         displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
