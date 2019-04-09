@@ -6,7 +6,7 @@ class ThingsConn {
     this.rdUuid = readUuid;
   }
 
-  async function writeText(device, text) {
+  async writeText(device, text) {
     let ch_array = text.split("");
     for(let i = 0; i < 16; i = i + 1){
       if(i >= text.length){
@@ -39,7 +39,7 @@ class ThingsConn {
     });
   }
 
-  async function writeFontSize(device, size) {
+  async writeFontSize(device, size) {
       const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
 
       const characteristic = await getCharacteristic(
@@ -50,7 +50,7 @@ class ThingsConn {
       });
   }
 
-  async function displayClear(device) {
+  async displayClear(device) {
       const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
       const characteristic = await getCharacteristic(
@@ -63,7 +63,7 @@ class ThingsConn {
 
 
 
-  async function ledWrite(device, port, value) {
+  async ledWrite(device, port, value) {
       const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
       const characteristic = await getCharacteristic(
@@ -74,7 +74,7 @@ class ThingsConn {
       });
   }
 
-  async function buzzerControl(device, value) {
+  async buzzerControl(device, value) {
       const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
 
       const characteristic = await getCharacteristic(
@@ -85,7 +85,7 @@ class ThingsConn {
       });
   }
 
-  async function gpioPinMode(device, port, value) {
+  async gpioPinMode(device, port, value) {
       const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
       const characteristic = await getCharacteristic(
@@ -96,7 +96,7 @@ class ThingsConn {
       });
   }
 
-  async function gpioDigitalWrite(device, port, value) {
+  async gpioDigitalWrite(device, port, value) {
       const command = [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
       const characteristic = await getCharacteristic(
@@ -107,7 +107,7 @@ class ThingsConn {
       });
   }
 
-  async function gpioAnalogWrite(device, port, value) {
+  async gpioAnalogWrite(device, port, value) {
       const command = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
 
       const characteristic = await getCharacteristic(
@@ -118,7 +118,7 @@ class ThingsConn {
       });
   }
 
-  async function i2cStartTransaction(device, address) {
+  async i2cStartTransaction(device, address) {
       const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
 
       const characteristic = await getCharacteristic(
@@ -128,7 +128,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function i2cWrite(device, value) {
+  async i2cWrite(device, value) {
       const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
 
       const characteristic = await getCharacteristic(
@@ -138,7 +138,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function i2cStopTransaction(device, address) {
+  async i2cStopTransaction(device, address) {
       const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
 
       const characteristic = await getCharacteristic(
@@ -148,7 +148,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function i2cRequestFrom(device, address) {
+  async i2cRequestFrom(device, address) {
       const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
 
       const characteristic = await getCharacteristic(
@@ -158,7 +158,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function i2cReadRequest(device) {
+  async i2cReadRequest(device) {
       const command = [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
       const characteristic = await getCharacteristic(
@@ -168,7 +168,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function gpioDigitalReadReq(device, port) {
+  async gpioDigitalReadReq(device, port) {
       const command = [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
 
       const characteristic = await getCharacteristic(
@@ -178,7 +178,7 @@ class ThingsConn {
           throw e;
       });
   }
-  async function gpioAnalogReadReq(device, port) {
+  async gpioAnalogReadReq(device, port) {
       const command = [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
 
       const characteristic = await getCharacteristic(
@@ -189,7 +189,7 @@ class ThingsConn {
       });
   }
 
-  async function readReq(device, cmd) {
+  async readReq(device, cmd) {
       const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
 
       const characteristic = await getCharacteristic(
@@ -200,7 +200,7 @@ class ThingsConn {
       });
   }
 
-  async function deviceRead(device) {
+  async deviceRead(device) {
       const readCmdCharacteristic = await getCharacteristic(
           device, this.svUuid, this.rdUuid);
 
@@ -234,7 +234,7 @@ let ThingsConn = function(svUuid, writeUuid, readUuid) {
   this.rdUuid = readUuid;
 
 
-  this.writeTextControl = async function(device, addr_x, addr_y) {
+  this.writeTextControl = async(device, addr_x, addr_y) {
     const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
 
     const characteristic = await getCharacteristic(
