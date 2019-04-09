@@ -71,7 +71,7 @@ class ThingsConn {
 
     async ledWrite(port, value) {
         const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-        this.deviceWrite(command, 'io');
+        await this.deviceWrite(command, 'io');
     }
 
     async buzzerControl(value) {
