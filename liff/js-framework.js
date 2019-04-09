@@ -61,7 +61,7 @@ class ThingsConn {
 
     async writeFontSize(size) {
         const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
-        this.deviceWrite(command);
+        this.deviceWrite(command, 'io');
     }
 
     async displayClear(device) {
