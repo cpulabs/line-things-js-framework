@@ -36,6 +36,21 @@ window.onload = () => {
         flashSDKError(e);
         onScreenLog(`ERROR on getAvailability: ${e}`);
     });
+
+
+
+/*
+    const things1 = new ThingsConn(
+        512,
+        USER_SERVICE_UUID,
+        USER_CHARACTERISTIC_WRITE_UUID,
+        USER_CHARACTERISTIC_WRITE_IO_UUID,
+        USER_CHARACTERISTIC_READ_IO_UUID
+    );
+    things1.writeFontSize(1);
+*/
+
+
 }
 
 async function checkAvailablityAndDo(callbackIfAvailable) {
@@ -168,7 +183,6 @@ function initializeCardForDevice(device) {
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
         things.writeTextControl(
-            device,
             parseInt(template.querySelector('.displayaddress_x').value, 16),
             parseInt(template.querySelector('.displayaddress_y').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
