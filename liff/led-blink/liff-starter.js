@@ -158,6 +158,7 @@ async function setup(things){
     await things.displayControl(0, 0);
     await things.dispalyWrite("Write from JS");
 
+
     /*
     //Init I2C Device
     const sensorAddr = 0x49;
