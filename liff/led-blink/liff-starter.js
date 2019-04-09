@@ -158,8 +158,7 @@ async function setup(things){
     await things.displayControl(0, 0);
     await things.displayWrite("Write from JS");
 
-
-    /*
+    onScreenLog(`I2C Init`);
     //Init I2C Device
     const sensorAddr = 0x49;
     await things.i2cStartTransaction(sensorAddr);
@@ -168,25 +167,26 @@ async function setup(things){
     await things.i2cWrite(0);
     await things.i2cStopTransaction();
 
+    onScreenLog(`I2C Write Config`);
+
     await sleep(300);
     await things.i2cStartTransaction(sensorAddr);
     await things.i2cWrite(0);
     await things.i2cStopTransaction();
 
+    onScreenLog(`I2C Read Data`);
     await sleep(300);
     await things.i2cRequestFrom(2, sensorAddr);
     await things.i2cReadRequest();
     await things.i2cReadRequest();
-    */
-
 }
 
 
 async function loop(things){
     while(true){
-        await ledWriteByte(0);
+        await things.ledWriteByte(0);
         await sleep(1000);
-        await ledWriteByte(0xff);
+        await things.ledWriteByte(0xff);
         await sleep(1000);
     }
 }
