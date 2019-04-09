@@ -80,6 +80,11 @@ class ThingsConn {
         this.deviceWrite(command, 'io');
     }
 
+    async ledWriteByte(value) {
+        const command = [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
+        this.deviceWrite(command, 'io');
+    }
+
     async buzzerControl(value) {
         const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
         this.deviceWrite(command, 'io');

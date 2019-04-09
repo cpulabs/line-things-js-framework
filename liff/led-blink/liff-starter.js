@@ -157,15 +157,9 @@ async function setup(things){
 
 async function loop(things){
   while(true){
-    await things.ledWrite(2, 0).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(3, 0).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(4, 0).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(5, 0).catch(e => `error: ${e}\n${e.stack}`);
+    await ledWriteByte(0)
     await sleep(1000);
-    await things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
+    await ledWriteByte(0xff);
     await sleep(1000);
   }
 }
