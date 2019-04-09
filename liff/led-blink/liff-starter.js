@@ -156,7 +156,7 @@ async function setup(things){
 
     await things.displayClear();
     await things.displayControl(0, 0);
-    await things.dispalyWrite("Write from JS");
+    //await things.dispalyWrite("Write from JS");
 
 
     /*
