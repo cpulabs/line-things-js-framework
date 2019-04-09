@@ -133,7 +133,10 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_READ_IO_UUID
             );
 
+            onScreenLog('setup start');
+
             setup(things);
+            onScreenLog('Loop start');
             loop(things);
 
         }).catch(e => {
@@ -145,14 +148,14 @@ function connectDevice(device) {
     }
 }
 
-function setup(){
+function setup(things){
     things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
     things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
     things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
     things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
 }
 
-function loop(){
+function loop(things){
   sleep(1000);
   things.ledWrite(2, 0).catch(e => `error: ${e}\n${e.stack}`);
   things.ledWrite(3, 0).catch(e => `error: ${e}\n${e.stack}`);
@@ -231,6 +234,22 @@ function updateConnectionStatus(device, status) {
         document.getElementById(device.id).classList.remove('active');
     }
 }
+
+
+
+async function getCharacteristic(device, serviceId, characteristicId) {
+    const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
+        flashSDKError(e);
+        throw e;
+    });
+    const characteristic = await service.getCharacteristic(characteristicId).catch(e => {
+        flashSDKError(e);
+        throw e;
+    });
+    onScreenLog(`Got characteristic ${serviceId} ${characteristicId} ${device.id}`);
+    return characteristic;
+}
+
 
 
 function getDeviceCard(device) {

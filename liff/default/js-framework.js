@@ -26,7 +26,6 @@ class ThingsConn {
         });
     }
 
-
     async writeAdvertUuid(uuid) {
         const tx_uuid = uuid.replace(/-/g, '');
         let uuid_byte = [];
