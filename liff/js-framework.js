@@ -13,7 +13,7 @@ class ThingsConn {
     }
 
     async enterBleioMode(){
-      const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
       this.deviceWrite(command, 'control');
     }
 
