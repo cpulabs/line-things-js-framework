@@ -1,6 +1,7 @@
 const USER_SERVICE_UUID = "981b0d79-2855-44f4-aa14-3c34012a3dd3";
 const USER_CHARACTERISTIC_NOTIFY_UUID = "e90b4b4e-f18a-44f0-8691-b041c7fe57f2";
-const USER_CHARACTERISTIC_READ_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
+const USER_CHARACTERISTIC_WRITE_IO_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
+const USER_CHARACTERISTIC_READ_IO_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
 const USER_CHARACTERISTIC_WRITE_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
 
 const deviceUUIDSet = new Set();
@@ -141,8 +142,13 @@ function initializeCardForDevice(device) {
     template.setAttribute('id', cardId);
     template.querySelector('.card > .card-header > .device-name').innerText = device.name;
 
-    const things = new ThingsConn(device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID, USER_CHARACTERISTIC_READ_UUID);
-
+    const things = new ThingsConn(
+        device,
+        USER_SERVICE_UUID,
+        USER_CHARACTERISTIC_WRITE_UUID,
+        USER_CHARACTERISTIC_WRITE_IO_UUID,
+        USER_CHARACTERISTIC_READ_IO_UUID
+    );
 
     // Device disconnect button
     template.querySelector('.device-disconnect').addEventListener('click', () => {
@@ -151,121 +157,114 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.setuuid').addEventListener('click', () => {
-        writeAdvertuuid(device, template.querySelector('.uuid_text').value).catch(e => onScreenLog(`ERROR on writeAdvertuuid(): ${e}\n${e.stack}`));
+        things.writeAdvertuuid(
+            template.querySelector('.uuid_text').value
+        ).catch(e => onScreenLog(`ERROR on writeAdvertuuid(): ${e}\n${e.stack}`));
     });
 
     template.querySelector('.device-read').addEventListener('click', () => {
-        deviceRead(device).catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
+        things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
-        /*
-        writeTextControl(device,
-          parseInt(template.querySelector('.displayaddress_x').value, 16),
-          parseInt(template.querySelector('.displayaddress_y').value, 16)
+        things.writeTextControl(
+            device,
+            parseInt(template.querySelector('.displayaddress_x').value, 16),
+            parseInt(template.querySelector('.displayaddress_y').value, 16)
         ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
-        */
-        things.writeTextControl(device, parseInt(template.querySelector('.displayaddress_x').value, 16), parseInt(template.querySelector('.displayaddress_y').value, 16));
-
-
     });
 
     template.querySelector('.textsize-write').addEventListener('click', () => {
-
-        /*
-        writeFontSize(device,
+        things.writeFontSize(
             parseInt(template.querySelector('.textsize').value, 16)
-        ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
-        */
-        things.writeFontSize(parseInt(template.querySelector('.textsize').value, 16));
+        ).catch(e => `ERROR on writeFontSize(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.text-write').addEventListener('click', () => {
-        writeText(device,
-          template.querySelector('.display_text').value
+        things.writeText(
+            template.querySelector('.display_text').value
         ).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
 
-
     template.querySelector('.text-clear').addEventListener('click', () => {
-        displayClear(device).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
+        things.displayClear().catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.led-write').addEventListener('click', () => {
-        ledWrite(device,
-          parseInt(template.querySelector('.led-port').value, 16),
-          parseInt(template.querySelector('.led-value').value, 16)
+        things.ledWrite(
+            parseInt(template.querySelector('.led-port').value, 16),
+            parseInt(template.querySelector('.led-value').value, 16)
         ).catch(e => `ERROR on writeLed(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.buzzer-write').addEventListener('click', () => {
-        buzzerControl(device,
-          parseInt(template.querySelector('.buzzer-control').value, 16)
+        things.buzzerControl(
+            parseInt(template.querySelector('.buzzer-control').value, 16)
         ).catch(e => `ERROR on buzzerControl(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.gpio-direction').addEventListener('click', () => {
-        gpioPinMode(device,
-          parseInt(template.querySelector('.gpio-direction-port').value, 16),
-          parseInt(template.querySelector('.gpio-direction-dir').value, 16)
+        things.gpioPinMode(
+            parseInt(template.querySelector('.gpio-direction-port').value, 16),
+            parseInt(template.querySelector('.gpio-direction-dir').value, 16)
         ).catch(e => `ERROR on gpioPinMode(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.gpio-dwrite').addEventListener('click', () => {
-        gpioDigitalWrite(device,
-          parseInt(template.querySelector('.gpio-digitalwrite-port').value, 16),
-          parseInt(template.querySelector('.gpio-digitalwrite-value').value, 16)
+        things.gpioDigitalWrite(
+            parseInt(template.querySelector('.gpio-digitalwrite-port').value, 16),
+            parseInt(template.querySelector('.gpio-digitalwrite-value').value, 16)
         ).catch(e => `ERROR on gpioDirigtalWrite(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.gpio-awrite').addEventListener('click', () => {
-        gpioAnalogWrite(device,
-          parseInt(template.querySelector('.gpio-awrite-port').value, 16),
-          parseInt(template.querySelector('.gpio-awrite-value').value, 16)
+        things.gpioAnalogWrite(
+            parseInt(template.querySelector('.gpio-awrite-port').value, 16),
+            parseInt(template.querySelector('.gpio-awrite-value').value, 16)
         ).catch(e => `ERROR on gpioAnalogWrite(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.i2c-start').addEventListener('click', () => {
-        i2cStartTransaction(device,
-          parseInt(template.querySelector('.i2c-start-addr').value, 16),
+        things.i2cStartTransaction(
+            parseInt(template.querySelector('.i2c-start-addr').value, 16),
         ).catch(e => `ERROR on i2cStartTransaction(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.i2c-write').addEventListener('click', () => {
-        i2cWrite(device,
-          parseInt(template.querySelector('.i2c-write-data').value, 16),
+        things.i2cWrite(
+            parseInt(template.querySelector('.i2c-write-data').value, 16),
         ).catch(e => `ERROR on i2cWrite(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.i2c-stop').addEventListener('click', () => {
-        i2cStopTransaction(device).catch(e => `ERROR on i2cStopTransaction(): ${e}\n${e.stack}`);
+        things.i2cStopTransaction().catch(e => `ERROR on i2cStopTransaction(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.i2c-request').addEventListener('click', () => {
-        i2cRequestFrom(device,
-          parseInt(template.querySelector('.i2c-request-addr').value, 16),
+        things.i2cRequestFrom(
+            parseInt(template.querySelector('.i2c-request-addr').value, 16),
         ).catch(e => `ERROR on i2cRequestFrom(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.i2c-readreq').addEventListener('click', () => {
-        i2cReadRequest(device).catch(e => `ERROR on i2cReadRequest(): ${e}\n${e.stack}`);
+        things.i2cReadRequest().catch(e => `ERROR on i2cReadRequest(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.gpio-dreadreq').addEventListener('click', () => {
-        gpioDigitalReadReq(device,
-          parseInt(template.querySelector('.gpio-dreadreq-port').value, 16),
+        things.gpioDigitalReadReq(
+            parseInt(template.querySelector('.gpio-dreadreq-port').value, 16),
         ).catch(e => `ERROR on gpioDigitalReadReq(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.gpio-areadreq').addEventListener('click', () => {
-        gpioAnalogReadReq(device,
-          parseInt(template.querySelector('.gpio-areadreq-port').value, 16),
+        things.gpioAnalogReadReq(
+            parseInt(template.querySelector('.gpio-areadreq-port').value, 16),
         ).catch(e => `ERROR on gpioAnalogReadReq(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.read-buffer-write').addEventListener('click', () => {
-        readReq(device,
-          parseInt(template.querySelector('.read-buffer-source').value, 16),
+        things.readReq(
+            parseInt(template.querySelector('.read-buffer-source').value, 16),
         ).catch(e => `ERROR on readReq(): ${e}\n${e.stack}`);
     });
 
@@ -326,324 +325,6 @@ function updateConnectionStatus(device, status) {
     }
 }
 
-async function toggleNotification(device) {
-    if (!connectedUUIDSet.has(device.id)) {
-        window.alert('Please connect to a device first');
-        onScreenLog('Please connect to a device first.');
-        return;
-    }
-
-    const accelerometerCharacteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_NOTIFY_UUID);
-
-    if (notificationUUIDSet.has(device.id)) {
-        // Stop notification
-        await stopNotification(accelerometerCharacteristic, notificationCallback);
-        notificationUUIDSet.delete(device.id);
-        getDeviceNotificationButton(device).classList.remove('btn-success');
-        getDeviceNotificationButton(device).classList.add('btn-secondary');
-        getDeviceNotificationButton(device).getElementsByClassName('fas')[0].classList.remove('fa-toggle-on');
-        getDeviceNotificationButton(device).getElementsByClassName('fas')[0].classList.add('fa-toggle-off');
-    } else {
-        // Start notification
-        await enableNotification(accelerometerCharacteristic, notificationCallback);
-        notificationUUIDSet.add(device.id);
-        getDeviceNotificationButton(device).classList.remove('btn-secondary');
-        getDeviceNotificationButton(device).classList.add('btn-success');
-        getDeviceNotificationButton(device).getElementsByClassName('fas')[0].classList.remove('fa-toggle-off');
-        getDeviceNotificationButton(device).getElementsByClassName('fas')[0].classList.add('fa-toggle-on');
-    }
-}
-
-async function enableNotification(characteristic, callback) {
-    const device = characteristic.service.device;
-    characteristic.addEventListener('characteristicvaluechanged', callback);
-    await characteristic.startNotifications();
-    onScreenLog('Notifications STARTED ' + characteristic.uuid + ' ' + device.id);
-}
-
-async function stopNotification(characteristic, callback) {
-    const device = characteristic.service.device;
-    characteristic.removeEventListener('characteristicvaluechanged', callback);
-    await characteristic.stopNotifications();
-    onScreenLog('Notifications STOPPED　' + characteristic.uuid + ' ' + device.id);
-}
-
-function notificationCallback(e) {
-    const accelerometerBuffer = new DataView(e.target.value.buffer);
-    onScreenLog(`Notify ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
-    updateSensorValue(e.target.service.device, accelerometerBuffer);
-}
-
-async function deviceRead(device) {
-    const readCmdCharacteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_READ_UUID);
-
-    const valueBuffer = await readCharacteristic(readCmdCharacteristic).catch(e => {
-        onScreenLog('Read Value  : ' + "error");
-        return null;
-    });
-
-    /*
-    if (accelerometerBuffer !== null) {
-        updateSensorValue(device, accelerometerBuffer);
-    }
-    */
-    onScreenLog('Read Value  : ' + valueBuffer);
-
-}
-
-function updateSensorValue(device, buffer) {
-
-}
-
-async function readCharacteristic(characteristic) {
-    const response = await characteristic.readValue().catch(e => {
-        onScreenLog(`Error reading ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-    if (response) {
-        onScreenLog(`Read ${characteristic.uuid}: ${buf2hex(response.buffer)}`);
-        const values = new DataView(response.buffer);
-        return values;
-    } else {
-        throw 'Read value is empty?';
-    }
-}
-
-async function writeText(device, text) {
-  let ch_array = text.split("");
-  for(let i = 0; i < 16; i = i + 1){
-    if(i >= text.length){
-      ch_array[i] = 0;
-    }else{
-      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
-    }
-  }
-
-  const cmd = [1, text.length];
-  const command = cmd.concat(ch_array);
-
-  const characteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-  await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-      onScreenLog(`Write text : Error writing ${characteristic.uuid}: ${e}`);
-      throw e;
-  });
-
-  onScreenLog(`Write text done`);
-}
-
-
-async function writeTextControl(device, addr_x, addr_y) {
-    const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Write text control : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-
-    onScreenLog(`Write text control done`);
-}
-
-async function writeFontSize(device, size) {
-    const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Display : Error write font size ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function displayClear(device) {
-    const command = [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Display clear : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-
-
-async function ledWrite(device, port, value) {
-    const command = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Write LED : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function buzzerControl(device, value) {
-    const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function gpioPinMode(device, port, value) {
-    const command = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function gpioDigitalWrite(device, port, value) {
-    const command = [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function gpioAnalogWrite(device, port, value) {
-    const command = [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function i2cStartTransaction(device, address) {
-    const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error start transaction ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function i2cWrite(device, value) {
-    const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error write data ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function i2cStopTransaction(device, address) {
-    const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error stop transaction ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function i2cRequestFrom(device, address) {
-    const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error request from ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function i2cReadRequest(device) {
-    const command = [12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error read request ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function gpioDigitalReadReq(device, port) {
-    const command = [13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`GPIO : Error digital read request ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-async function gpioAnalogReadReq(device, port) {
-    const command = [14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, port];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`I2C : Error analog read request ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function readReq(device, cmd) {
-    const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
-
-    const characteristic = await getCharacteristic(
-          device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-    await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-        onScreenLog(`Buzzer : Error writing ${characteristic.uuid}: ${e}`);
-        throw e;
-    });
-}
-
-async function writeAdvertuuid(device, uuid) {
-  const tx_uuid = uuid.replace(/-/g, '');
-  let uuid_byte = [];
-  let hash = 0;
-  for(let i = 0; i < 16; i = i + 1) {
-    uuid_byte[i] = parseInt(tx_uuid.substring(i * 2, i * 2 + 2), 16);
-    hash = hash + uuid_byte[i];
-  }
-
-  const header = [1, 0, 0, hash];
-  const command = header.concat(uuid_byte);
-
-  onScreenLog('Write new advert UUID to device  : ' + new Uint8Array(command));
-
-  const characteristic = await getCharacteristic(
-        device, USER_SERVICE_UUID, USER_CHARACTERISTIC_WRITE_UUID);
-  await characteristic.writeValue(new Uint8Array(command)).catch(e => {
-      onScreenLog(`Error writing ${characteristic.uuid}: ${e}`);
-      throw e;
-  });
-}
-
-
-async function getCharacteristic(device, serviceId, characteristicId) {
-    const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
-        flashSDKError(e);
-        throw e;
-    });
-    const characteristic = await service.getCharacteristic(characteristicId).catch(e => {
-        flashSDKError(e);
-        throw e;
-    });
-    onScreenLog(`Got characteristic ${serviceId} ${characteristicId} ${device.id}`);
-    return characteristic;
-}
 
 function getDeviceCard(device) {
     return document.getElementById('device-' + device.id);
