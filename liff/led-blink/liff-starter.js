@@ -11,6 +11,7 @@ const notificationUUIDSet = new Set();
 
 let logNumber = 1;
 
+
 function onScreenLog(text) {
     const logbox = document.getElementById('logbox');
     logbox.value += '#' + logNumber + '> ';
