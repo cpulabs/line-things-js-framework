@@ -200,6 +200,9 @@ class ThingsConn {
       });
   }
 
+  
+
+
   async deviceRead(device) {
       const readCmdCharacteristic = await getCharacteristic(
           device, this.svUuid, this.rdUuid);
