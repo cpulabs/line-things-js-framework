@@ -149,6 +149,8 @@ function connectDevice(device) {
 }
 
 async function setup(things){
+    await things.enterBleioMode().catch(e => `error: ${e}\n${e.stack}`);
+    await sleep(1000);
     await things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
     await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
     await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);

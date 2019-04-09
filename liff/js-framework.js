@@ -12,6 +12,16 @@ class ThingsConn {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    async enterBleioMode(){
+      const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      this.deviceWrite(command, 'control');
+    }
+
+    async enterDemoMode(){
+        const command = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.deviceWrite(command, 'control');
+    }
+
     async deviceWrite(data, mode){
         let uuid;
         if(mode == 'control'){
