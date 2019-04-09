@@ -134,10 +134,7 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_READ_IO_UUID
             );
 
-            onScreenLog('setup start');
-
             setup(things);
-            onScreenLog('Loop start');
             loop(things);
 
         }).catch(e => {
@@ -159,12 +156,12 @@ async function setup(things){
 }
 
 async function loop(things){
-  while(true){
-    await ledWriteByte(0)
-    await sleep(1000);
-    await ledWriteByte(0xff);
-    await sleep(1000);
-  }
+    while(true){
+        await ledWriteByte(0)
+        await sleep(1000);
+        await ledWriteByte(0xff);
+        await sleep(1000);
+    }
 }
 
 
