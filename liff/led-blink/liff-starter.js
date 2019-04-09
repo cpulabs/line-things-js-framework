@@ -156,7 +156,7 @@ async function setup(things){
 
     await things.displayClear();
     await things.displayControl(0, 0);
-    await things.displayWrite("Write from JS");
+    await things.displayWrite("Hello world");
 
     onScreenLog(`I2C Init`);
     //Init I2C Device
