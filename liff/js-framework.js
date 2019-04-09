@@ -1,6 +1,7 @@
 
 class ThingsConn {
-  constructor(svUuid, writeUuid, readUuid) {
+  constructor(device, svUuid, writeUuid, readUuid) {
+    this.device = device;
     this.svUuid = svUuid;
     this.wrUuid = writeUuid;
     this.rdUuid = readUuid;
@@ -39,15 +40,18 @@ class ThingsConn {
     });
   }
 
-  async writeFontSize(device, size) {
+  async writeFontSize(size) {
       const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
 
+      deviceWrite(command);
+      /*
       const characteristic = await getCharacteristic(
             device, this.svUuid, this.wrUuid);
       await characteristic.writeValue(new Uint8Array(command)).catch(e => {
           onScreenLog(`Display : Error write font size ${characteristic.uuid}: ${e}`);
           throw e;
       });
+      */
   }
 
   async displayClear(device) {
@@ -200,7 +204,14 @@ class ThingsConn {
       });
   }
 
-  
+  async deviceWrite(data){
+      const characteristic = await getCharacteristic(
+            this.device, this.svUuid, this.wrUuid);
+      await characteristic.writeValue(new Uint8Array(data)).catch(e => {
+          onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
+          throw e;
+      });
+  }
 
 
   async deviceRead(device) {
