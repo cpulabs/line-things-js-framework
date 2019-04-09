@@ -32,7 +32,7 @@ class ThingsConn {
           return;
         }
 
-        const characteristic = await getCharacteristic(
+        const characteristic = await this.getCharacteristic(
               this.device, this.svUuid, uuid);
         await characteristic.writeValue(new Uint8Array(data)).catch(e => {
             onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
@@ -152,7 +152,7 @@ class ThingsConn {
 
 
     async deviceRead() {
-        const readCmdCharacteristic = await getCharacteristic(
+        const readCmdCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.rdIoUuid);
 
         const valueBuffer = await readCharacteristic(readCmdCharacteristic).catch(e => {
@@ -179,7 +179,7 @@ class ThingsConn {
     }
 
 
-    async function getCharacteristic(device, serviceId, characteristicId) {
+    async getCharacteristic(device, serviceId, characteristicId) {
         const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
             flashSDKError(e);
             throw e;
