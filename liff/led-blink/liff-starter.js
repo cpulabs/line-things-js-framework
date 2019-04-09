@@ -154,6 +154,9 @@ async function setup(things){
     await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
     await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
 
+    await things.displayClear();
+    await things.displayControl(0, 0);
+    await things.dispalyWrite("Write from JS");
 
     /*
     //Init I2C Device

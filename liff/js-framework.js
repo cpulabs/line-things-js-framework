@@ -31,7 +31,7 @@ class ThingsConn {
         this.writeCharacteristic(command, 'control');
     }
 
-    async writeText(text) {
+    async displayWrite(text) {
         let ch_array = text.split("");
         for(let i = 0; i < 16; i = i + 1){
             if(i >= text.length){
@@ -45,12 +45,12 @@ class ThingsConn {
         this.writeCharacteristic(command, 'io');
     }
 
-    async writeTextControl(addr_x, addr_y) {
+    async displayControl(addr_x, addr_y) {
         const command = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, addr_x, addr_y];
         this.writeCharacteristic(command, 'io');
     }
 
-    async writeFontSize(size) {
+    async displayFontSize(size) {
         const command = [15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, size];
         this.writeCharacteristic(command, 'io');
     }
