@@ -153,11 +153,34 @@ async function setup(things){
     await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
     await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
     await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
+
+
+    /*
+    //Init I2C Device
+    const sensorAddr = 0x49;
+    await things.i2cStartTransaction(sensorAddr);
+    await things.i2cWrite(0x01);
+    await things.i2cWrite(0x60);
+    await things.i2cWrite(0);
+    await things.i2cStopTransaction();
+
+    await sleep(300);
+    await things.i2cStartTransaction(sensorAddr);
+    await things.i2cWrite(0);
+    await things.i2cStopTransaction();
+
+    await sleep(300);
+    await things.i2cRequestFrom(2, sensorAddr);
+    await things.i2cReadRequest();
+    await things.i2cReadRequest();
+    */
+
 }
+
 
 async function loop(things){
     while(true){
-        await ledWriteByte(0)
+        await ledWriteByte(0);
         await sleep(1000);
         await ledWriteByte(0xff);
         await sleep(1000);

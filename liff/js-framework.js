@@ -98,12 +98,12 @@ class ThingsConn {
         const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
         this.writeCharacteristic(command, 'io');
     }
-    async i2cStopTransaction(address) {
-        const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
+    async i2cStopTransaction() {
+        const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.writeCharacteristic(command, 'io');
     }
-    async i2cRequestFrom(address) {
-        const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
+    async i2cRequestFrom(address, length) {
+        const command = [11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, length, address];
         this.writeCharacteristic(command, 'io');
     }
     async i2cReadRequest(device) {
