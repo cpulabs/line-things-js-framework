@@ -153,17 +153,4 @@ class ThingsConn {
             throw 'Read value is empty?';
         }
     }
-
-    async getCharacteristic(device, serviceId, characteristicId) {
-        const service = await device.gatt.getPrimaryService(serviceId).catch(e => {
-            flashSDKError(e);
-            throw e;
-        });
-        const characteristic = await service.getCharacteristic(characteristicId).catch(e => {
-            flashSDKError(e);
-            throw e;
-        });
-        onScreenLog(`Got characteristic ${serviceId} ${characteristicId} ${device.id}`);
-        return characteristic;
-    }
 }
