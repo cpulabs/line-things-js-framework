@@ -191,16 +191,16 @@ async function setup(things){
 
 
 async function loop(things){
-    await things.ledWriteByte(0);
-    await sleep(1000);
-    /*
+    //await things.ledWriteByte(0);
+    //await sleep(1000);
+
     while(true){
         await things.ledWriteByte(0);
         await sleep(1000);
         await things.ledWriteByte(0xff);
         await sleep(1000);
     }
-    */
+
 }
 
 
