@@ -160,7 +160,7 @@ async function setup(things){
 
     onScreenLog(`I2C Init`);
     //Init I2C Device
-    const sensorAddr = 0x49;
+    const sensorAddr = 0x48;
     await things.i2cStartTransaction(sensorAddr);
     await things.i2cWrite(0x01);
     await things.i2cWrite(0x60);
