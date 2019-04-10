@@ -176,7 +176,7 @@ async function setup(things){
 
     onScreenLog(`I2C Read Data`);
     await sleep(300);
-    await things.i2cRequestFrom(2, sensorAddr);
+    await things.i2cRequestFrom(sensorAddr, 2);
     await sleep(300);
     await things.i2cReadRequest();
     await things.i2cReadRequest();
