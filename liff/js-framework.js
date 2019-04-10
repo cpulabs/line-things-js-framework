@@ -90,7 +90,7 @@ class ThingsConn {
         this.writeCharacteristic(command, 'io');
     }
 
-    async i2cStartTransaction(address) {
+    async i2cStartTransmission(address) {
         const command = [8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, address];
         this.writeCharacteristic(command, 'io');
     }
@@ -98,7 +98,7 @@ class ThingsConn {
         const command = [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, value];
         this.writeCharacteristic(command, 'io');
     }
-    async i2cStopTransaction() {
+    async i2cStopTransmission() {
         const command = [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.writeCharacteristic(command, 'io');
     }
