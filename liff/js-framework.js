@@ -166,14 +166,12 @@ class ThingsConn {
         }else{
             return;
         }
-
         const characteristic = await this.getCharacteristic(
               this.device, this.svUuid, uuid);
         await characteristic.writeValue(new Uint8Array(data)).catch(e => {
             onScreenLog(`Write value to device ${characteristic.uuid}: ${e}`);
             throw e;
         });
-
         await this.sleep(10);
     }
 

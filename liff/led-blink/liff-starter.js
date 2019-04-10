@@ -158,7 +158,6 @@ async function setup(things){
     await things.displayControl(0, 0);
     await things.displayWrite("Hello world");
 
-
     //Init I2C Device
     await onScreenLog(`I2C temp sensor init`);
     const sensorAddr = 0x48;
@@ -176,14 +175,18 @@ async function setup(things){
     await things.i2cRequestFrom(sensorAddr, 2);
     await sleep(100);
     await things.i2cReadRequest();
+    await sleep(100);
     await things.i2cReadData(5);
+    await sleep(100);
     const tempData0 = await things.deviceRead();
+    await sleep(100);
     await things.i2cReadRequest();
+    await sleep(100);
     await things.i2cReadData(5);
+    await sleep(100);
     const tempData1 = await things.deviceRead();
 
     onScreenLog(String(tempData0) + String(tempData1));
-
 }
 
 
