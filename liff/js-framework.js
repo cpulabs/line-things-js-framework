@@ -130,7 +130,7 @@ class ThingsConn {
         const readCmdCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.rdIoUuid);
 
-        const valueBuffer = await readCharacteristic(readCmdCharacteristic).catch(e => {
+        const valueBuffer = await this.readCharacteristic(readCmdCharacteristic).catch(e => {
             onScreenLog('Read Value  : ' + "error");
             return null;
         });
