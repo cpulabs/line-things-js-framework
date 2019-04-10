@@ -171,19 +171,19 @@ async function setup(things){
     await things.i2cStartTransmission(sensorAddr);
     await things.i2cWrite(0);
     await things.i2cStopTransmission();
-    await sleep(100);
+    await sleep(1000);
     await things.i2cRequestFrom(sensorAddr, 2);
-    await sleep(100);
+    await sleep(1000);
     await things.i2cReadRequest();
-    await sleep(100);
+    await sleep(1000);
     await things.i2cReadData(5);
-    await sleep(100);
+    await sleep(1000);
     const tempData0 = await things.deviceRead();
-    await sleep(100);
+    await sleep(1000);
     await things.i2cReadRequest();
-    await sleep(100);
+    await sleep(1000);
     await things.i2cReadData(5);
-    await sleep(100);
+    await sleep(1000);
     const tempData1 = await things.deviceRead();
 
     onScreenLog(String(tempData0) + String(tempData1));
