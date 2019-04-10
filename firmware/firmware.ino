@@ -767,7 +767,7 @@ void setup() {
   if ( cmpUuid == 0 ){
     // Accepted values are: -40, -30, -20, -16, -12, -8, -4, 0, 4
     bleConfigure(-40);
-    Serial.println("[Using default advertising packet]");
+    Serial.println("[default advertising service uuid]");
     Serial.println("BLE transmitter power : -40dBm");
   } else {
     bleConfigure(0);
