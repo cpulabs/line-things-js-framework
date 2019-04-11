@@ -829,6 +829,41 @@ void enterJsControlMode(){
   debugPrint("Enter to JS control mode");
 }
 
+
+void writeAdvertisingPacket(){
+  // BLEのAdvertising UUIDを変更した場合
+  if (g_flag_error_advertiseuuid) {
+    String errorMsg =
+        "[ERROR] : Write new advertising UUID, Hash isn't match. "
+        "Please retry it.";
+    debugPrint(errorMsg);
+    display.clearDisplay();       // ディスプレイのバッファを初期化
+    display.setTextSize(1);       // テキストサイズ 1
+    display.setTextColor(WHITE);  // Color White
+    display.setCursor(0, 10);     // X=0, Y=10
+    display.println(errorMsg);
+    display.display();            // ディスプレイを更新
+    delay(5000);
+    g_flag_update_advertiseuuid = 0;
+    g_flag_error_advertiseuuid = 0;
+    break;
+  }
+  configFileWrite(blesv_user_uuid);
+  configFileRead();
+  debugPrint("BLE advertising uuid changed from LIFF.");
+  debugPrint("Enable new uuid after restart MPU.");
+  debugPrint("Please push reset button.");
+  display.clearDisplay();       // ディスプレイのバッファを初期化
+  display.setTextSize(1);       // テキストサイズ 1
+  display.setTextColor(WHITE);  // Color White
+  display.setCursor(0, 10);     // X=0, Y=10
+  display.println("BLE advertising uuid changed from LIFF.");
+  display.println("Enable new uuid after restart MPU.");
+  display.println("Please push reset button.");
+  display.display();            // ディスプレイを更新
+  for (;;);
+}
+
 void bleJsLoop(){
   byte i2cReadData = 0;
   unsigned int temp = 0;
@@ -905,6 +940,11 @@ void bleJsLoop(){
       i2cReadData = i2cRead();
     }
 
+    //Write UUID advertising packet
+    if (g_flag_update_advertiseuuid) {
+      writeAdvertisingPacket();
+    }
+
     //BLE Read action
     if(g_read_action.changed){
       byte data[4] = {0, 0, 0, 0};
@@ -974,38 +1014,9 @@ void loop() {
       g_flag_sw2 = 0;
     }
 
-    // BLEのAdvertising UUIDを変更した場合
+    //Write UUID advertising packet
     if (g_flag_update_advertiseuuid) {
-      if (g_flag_error_advertiseuuid) {
-        String errorMsg =
-            "[ERROR] : Write new advertising UUID, Hash isn't match. "
-            "Please retry it.";
-        debugPrint(errorMsg);
-        display.clearDisplay();       // ディスプレイのバッファを初期化
-        display.setTextSize(1);       // テキストサイズ 1
-        display.setTextColor(WHITE);  // Color White
-        display.setCursor(0, 10);     // X=0, Y=10
-        display.println(errorMsg);
-        display.display();            // ディスプレイを更新
-        delay(5000);
-        g_flag_update_advertiseuuid = 0;
-        g_flag_error_advertiseuuid = 0;
-        break;
-      }
-      configFileWrite(blesv_user_uuid);
-      configFileRead();
-      debugPrint("BLE advertising uuid changed from LIFF.");
-      debugPrint("Enable new uuid after restart MPU.");
-      debugPrint("Please push reset button.");
-      display.clearDisplay();       // ディスプレイのバッファを初期化
-      display.setTextSize(1);       // テキストサイズ 1
-      display.setTextColor(WHITE);  // Color White
-      display.setCursor(0, 10);     // X=0, Y=10
-      display.println("BLE advertising uuid changed from LIFF.");
-      display.println("Enable new uuid after restart MPU.");
-      display.println("Please push reset button.");
-      display.display();            // ディスプレイを更新
-      for (;;);
+      writeAdvertisingPacket();
     }
 
     // BLEからWriteがあったときのブザーとLEDの制御
