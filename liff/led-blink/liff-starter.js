@@ -1,8 +1,8 @@
 const USER_SERVICE_UUID = "981b0d79-2855-44f4-aa14-3c34012a3dd3";
 const USER_CHARACTERISTIC_NOTIFY_UUID = "e90b4b4e-f18a-44f0-8691-b041c7fe57f2";
-const USER_CHARACTERISTIC_WRITE_IO_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
-const USER_CHARACTERISTIC_READ_IO_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
 const USER_CHARACTERISTIC_WRITE_UUID = "4f2596d7-b3d6-4102-85a2-947b80ab4c6f";
+const USER_CHARACTERISTIC_IO_WRITE_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
+const USER_CHARACTERISTIC_IO_READ_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
 
 const deviceUUIDSet = new Set();
 const connectedUUIDSet = new Set();
@@ -10,7 +10,6 @@ const connectingUUIDSet = new Set();
 const notificationUUIDSet = new Set();
 
 let logNumber = 1;
-
 
 function onScreenLog(text) {
     const logbox = document.getElementById('logbox');
@@ -130,13 +129,12 @@ function connectDevice(device) {
                 device,
                 USER_SERVICE_UUID,
                 USER_CHARACTERISTIC_WRITE_UUID,
-                USER_CHARACTERISTIC_WRITE_IO_UUID,
-                USER_CHARACTERISTIC_READ_IO_UUID
+                USER_CHARACTERISTIC_IO_WRITE_UUID,
+                USER_CHARACTERISTIC_IO_READ_UUID
             );
 
             setup(things);
             loop(things);
-
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
@@ -146,63 +144,33 @@ function connectDevice(device) {
     }
 }
 
+// Device initialize
 async function setup(things){
+    // Enter to BLE-IO mode
     await things.enterBleioMode().catch(e => `error: ${e}\n${e.stack}`);
     await sleep(1000);
-    await things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
 
+    // Clear display text, ane write new message
     await things.displayClear();
     await things.displayControl(0, 0);
     await things.displayWrite("Hello world");
 
-    //Init I2C Device
-    await onScreenLog(`I2C temp sensor init`);
-    const sensorAddr = 0x48;
-    await things.i2cStartTransmission(sensorAddr);
-    await things.i2cWrite(0x01);
-    await things.i2cWrite(0x60);
-    await things.i2cWrite(0);
-    await things.i2cStopTransmission();
-
-    onScreenLog(`I2C temp sensor read`);
-
-    await things.i2cStartTransmission(sensorAddr);
-    await things.i2cWrite(0);
-    await things.i2cStopTransmission();
-    await sleep(1000);
-    await things.i2cRequestFrom(sensorAddr, 2);
-    await sleep(1000);
-    await things.i2cReadRequest();
-    await sleep(1000);
-    await things.i2cReadData(5);
-    await sleep(1000);
-    const tempData0 = await things.deviceRead();
-    await sleep(1000);
-    await things.i2cReadRequest();
-    await sleep(1000);
-    await things.i2cReadData(5);
-    await sleep(1000);
-    const tempData1 = await things.deviceRead();
-
+    // Initial LED
+    await things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
+    await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
+    await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
+    await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
 }
 
-
 async function loop(things){
-    //await things.ledWriteByte(0);
-    //await sleep(1000);
-
     while(true){
+        // Write LED
         await things.ledWriteByte(0);
         await sleep(1000);
         await things.ledWriteByte(0xff);
         await sleep(1000);
     }
-
 }
-
 
 // Setup device information card
 function initializeCardForDevice(device) {
@@ -288,7 +256,6 @@ function getDeviceStatusButton(device) {
 function getDeviceDisconnectButton(device) {
     return getDeviceCard(device).getElementsByClassName('device-disconnect')[0];
 }
-
 
 function getDeviceNotificationButton(device) {
     return getDeviceCard(device).getElementsByClassName('notification-enable')[0];
