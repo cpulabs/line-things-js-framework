@@ -305,6 +305,8 @@ void bleWriteEvent(BLECharacteristic& chr, uint8_t* data, uint16_t len, uint16_t
       generatedHash += data[4 + i];
     }
 
+    Serial.println("UUID Change!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
     g_flag_update_advertiseuuid = 1;
 
     if (generatedHash != hash) {
