@@ -181,6 +181,20 @@ function initializeCardForDevice(device) {
     template.setAttribute('id', cardId);
     template.querySelector('.card > .card-header > .device-name').innerText = device.name;
 
+    const thingsUuid = new ThingsConn(
+        device,
+        USER_SERVICE_UUID,
+        USER_CHARACTERISTIC_WRITE_UUID,
+        USER_CHARACTERISTIC_IO_WRITE_UUID,
+        USER_CHARACTERISTIC_IO_READ_UUID
+    );
+
+    template.querySelector('.setuuid').addEventListener('click', () => {
+        thingsUuid.writeAdvertuuid(
+            template.querySelector('.uuid_text').value
+        ).catch(e => onScreenLog(`ERROR on writeAdvertuuid(): ${e}\n${e.stack}`));
+    });
+
     // Tabs
     ['write', 'read', 'advert'].map(key => {
         const tab = template.querySelector(`#nav-${key}-tab`);
