@@ -168,7 +168,7 @@ async function setup(things){
     await things.i2cStopTransmission();
 
     onScreenLog(`I2C temp sensor read`);
-    /*
+
     await things.i2cStartTransmission(sensorAddr);
     await things.i2cWrite(0);
     await things.i2cStopTransmission();
@@ -186,18 +186,7 @@ async function setup(things){
     await things.i2cReadData(5);
     await sleep(1000);
     const tempData1 = await things.deviceRead();
-    */
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
-    onScreenLog(String(await things.i2cRequestFrom(sensorAddr, 2)));
+
 }
 
 
