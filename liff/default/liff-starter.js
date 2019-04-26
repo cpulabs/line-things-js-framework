@@ -190,7 +190,7 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.text-clear').addEventListener('click', () => {
-        things.displayClear().catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
+        things.displayClear().catch(e => `ERROR on displayClear(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.led-write').addEventListener('click', () => {
