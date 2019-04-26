@@ -134,7 +134,7 @@ function connectDevice(device) {
             );
 
             setup(things);
-            //loop(things);
+            loop(things);
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
