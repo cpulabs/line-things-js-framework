@@ -141,7 +141,7 @@ class ThingsConn {
         this.readvalue = (result[0] * 65536) + result[1];
     }
 
-    function valueRead(){
+    valueRead(){
         return this.readvalue;
     }
 
