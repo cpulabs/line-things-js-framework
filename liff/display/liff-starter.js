@@ -167,11 +167,11 @@ async function loop(things){
     onScreenLog(`loop start`);
     while(true){
         onScreenLog(`1`);
-        await things.displayWrite(1);
+        await things.displayWrite("1");
         count = count + 1;
         await sleep(1000);
         onScreenLog(`2`);
-        await things.displayClear();
+        //await things.displayClear();
     }
 }
 
