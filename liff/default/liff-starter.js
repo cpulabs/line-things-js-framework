@@ -156,10 +156,6 @@ function initializeCardForDevice(device) {
         device.gatt.disconnect();
     });
 
-    //Enable JS Controle mode
-    things.enterDemoMode().catch(e => onScreenLog(`Do not support JS controle mode. Please update firmware`));
-
-    /*
     template.querySelector('.mode-write').addEventListener('click', () => {
         if(template.querySelector('.mode-select').value == "0"){
             things.enterDemoMode().catch(e => onScreenLog(`ERROR enter to Demo mode: ${e}\n${e.stack}`));
@@ -167,7 +163,6 @@ function initializeCardForDevice(device) {
             things.enterBleioMode().catch(e => onScreenLog(`ERROR enter to BLE IO mode: ${e}\n${e.stack}`));
         }
     });
-    */
 
     template.querySelector('.device-read').addEventListener('click', () => {
         let valueBuffer = things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
