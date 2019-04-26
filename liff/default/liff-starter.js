@@ -166,7 +166,8 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.device-read').addEventListener('click', () => {
-        things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
+        const resultData = things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
+        getDeviceReadData(device).innerText = resultData;
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
@@ -348,6 +349,11 @@ function getDeviceDisconnectButton(device) {
 function getDeviceNotificationButton(device) {
     return getDeviceCard(device).getElementsByClassName('notification-enable')[0];
 }
+
+function getDeviceReadData(device) {
+    return getDeviceCard(device).getElementsByClassName('result-data-view')[0];
+}
+
 
 function renderVersionField() {
     const element = document.getElementById('sdkversionfield');
