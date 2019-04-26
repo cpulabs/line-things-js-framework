@@ -276,7 +276,7 @@ function initializeCardForDevice(device) {
     });
 
     // Tabs
-    ['write', 'read', 'advert'].map(key => {
+    ['write', 'read'].map(key => {
         const tab = template.querySelector(`#nav-${key}-tab`);
         const nav = template.querySelector(`#nav-${key}`);
 
