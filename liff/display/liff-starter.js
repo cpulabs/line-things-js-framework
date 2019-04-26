@@ -166,7 +166,7 @@ async function loop(things){
     let count = 0;
     while(true){
         await things.displayWrite(count);
-        await count = count + 1;
+        count = count + 1;
         await sleep(1000);
         await things.displayClear();
     }
