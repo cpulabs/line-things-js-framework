@@ -171,22 +171,22 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
-        things.writeTextControl(
+        things.displayControl(
             parseInt(template.querySelector('.displayaddress_x').value, 16),
             parseInt(template.querySelector('.displayaddress_y').value, 16)
-        ).catch(e => `ERROR on writeTextControl(): ${e}\n${e.stack}`);
+        ).catch(e => `ERROR on displayControl(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.textsize-write').addEventListener('click', () => {
-        things.writeFontSize(
+        things.displayFontSize(
             parseInt(template.querySelector('.textsize').value, 16)
-        ).catch(e => `ERROR on writeFontSize(): ${e}\n${e.stack}`);
+        ).catch(e => `ERROR on displayFontSize(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.text-write').addEventListener('click', () => {
-        things.writeText(
+        things.displayWrite(
             template.querySelector('.display_text').value
-        ).catch(e => `ERROR on writeText(): ${e}\n${e.stack}`);
+        ).catch(e => `ERROR on displayWrite(): ${e}\n${e.stack}`);
     });
 
     template.querySelector('.text-clear').addEventListener('click', () => {
