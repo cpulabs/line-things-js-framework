@@ -147,7 +147,7 @@ function connectDevice(device) {
 // Device initialize
 async function setup(things){
     // Enter to BLE-IO mode
-    await things.enterBleioMode().catch(e => `error: ${e}\n${e.stack}`);
+    await things.enterBleioMode().catch(e => `do not support JS-control mode. please update firmware`);
     await sleep(1000);
 
     // Clear display text, ane write new message
