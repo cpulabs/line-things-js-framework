@@ -167,7 +167,7 @@ function initializeCardForDevice(device) {
 
     template.querySelector('.device-read').addEventListener('click', () => {
         const resultData = things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
-        getDeviceReadData(device).innerText = "[" + resultData[0] + ", " + resultData[1] + "]";
+        getDeviceReadData(device).innerText = resultData;
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
