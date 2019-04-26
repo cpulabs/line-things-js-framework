@@ -137,7 +137,7 @@ class ThingsConn {
 
         const result = [valueBuffer.getInt16(0, true), valueBuffer.getInt16(2, true)];
         onScreenLog('Read Value  : ' + result[0] + ", " + result[1]);
-        return (result[1] * 65536) + result[0];
+        return valueBufer;//(result[1] * 65536) + result[0];
     }
 
     async sleep(ms) {

@@ -166,8 +166,8 @@ function initializeCardForDevice(device) {
     });
 
     template.querySelector('.device-read').addEventListener('click', () => {
-        const resultData = things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
-        getDeviceReadData(device).innerText = resultData;
+        const valueBuffer = things.deviceRead().catch(e => `ERROR on deviceRead(): ${e}\n${e.stack}`);
+        getDeviceReadData(device).innerText = valueBuffer.getInt16(0, true), valueBuffer.getInt16(2, true);//resultData;
     });
 
     template.querySelector('.textctrl-write').addEventListener('click', () => {
