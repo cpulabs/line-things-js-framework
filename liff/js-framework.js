@@ -121,7 +121,7 @@ class ThingsConn {
 
     async readReq(cmd) {
         const command = [32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, cmd];
-        this.writeCharacteristic(command, io);
+        this.writeCharacteristic(command, 'io');
     }
 
 
