@@ -124,8 +124,6 @@ class ThingsConn {
         this.writeCharacteristic(command, 'io');
     }
 
-
-
     async deviceRead() {
         const readCmdCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.rdIoUuid);
