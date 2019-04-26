@@ -156,7 +156,7 @@ function initializeCardForDevice(device) {
         device.gatt.disconnect();
     });
 
-    things.enterDemoMode().catch(e => onScreenLog(`ERROR enter to Demo mode: ${e}\n${e.stack}`));
+    things.enterDemoMode().catch(e => onScreenLog(`Do not support JS controle mode. Please update firmware`));
 
     /*
     template.querySelector('.mode-write').addEventListener('click', () => {
