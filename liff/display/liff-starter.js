@@ -163,15 +163,9 @@ async function setup(things){
 }
 
 async function loop(things){
-    let count = 0;
-    onScreenLog(`loop start`);
     while(true){
-        onScreenLog(`1`);
-        await things.displayWrite("1");
-        count = count + 1;
+        await things.displayWrite("!");
         await sleep(1000);
-        onScreenLog(`2`);
-        //await things.displayClear();
     }
 }
 
