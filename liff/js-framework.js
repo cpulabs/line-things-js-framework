@@ -135,8 +135,10 @@ class ThingsConn {
             return null;
         });
 
-        onScreenLog('Read Value  : ' + valueBuffer);
-        return valueBuffer;
+        const result = [valueBuffer.getInt16(0, true), valueBuffer.getInt16(2, true)];
+
+        onScreenLog('Read Value  : ' + result[0] + result[1]);
+        return result;
     }
 
     async sleep(ms) {
