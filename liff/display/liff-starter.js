@@ -167,7 +167,7 @@ async function loop(things){
     onScreenLog(`loop start`);
     while(true){
         onScreenLog(`1`);
-        await things.displayWrite(count);
+        await things.displayWrite(1);
         count = count + 1;
         await sleep(1000);
         onScreenLog(`2`);
