@@ -164,7 +164,9 @@ async function setup(things){
 
 async function loop(things){
     let count = 0;
+    onScreenLog(`loop start`);
     while(true){
+        onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
         await things.displayWrite(count);
         count = count + 1;
         await sleep(1000);
