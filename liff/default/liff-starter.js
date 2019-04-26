@@ -156,11 +156,6 @@ function initializeCardForDevice(device) {
         device.gatt.disconnect();
     });
 
-    template.querySelector('.setuuid').addEventListener('click', () => {
-        things.writeAdvertuuid(
-            template.querySelector('.uuid_text').value
-        ).catch(e => onScreenLog(`ERROR on writeAdvertuuid(): ${e}\n${e.stack}`));
-    });
 
     template.querySelector('.mode-write').addEventListener('click', () => {
         if(template.querySelector('.mode-select').value == "0"){
