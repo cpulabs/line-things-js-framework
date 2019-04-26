@@ -166,10 +166,11 @@ async function loop(things){
     let count = 0;
     onScreenLog(`loop start`);
     while(true){
-        onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
+        onScreenLog(`1`);
         await things.displayWrite(count);
         count = count + 1;
         await sleep(1000);
+        onScreenLog(`2`);
         await things.displayClear();
     }
 }
