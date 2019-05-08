@@ -10,23 +10,15 @@ class ThingsConn {
     }
 
     async swNotifyEnable(source, mode, interval, callback){
-        const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, source, mode, interval >> 8, interval & 0xff];
-        await this.writeCharacteristic(command, 'io');
-
-        onScreenLog('Notifications setup 1');
-
         const notifyCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.ntfySwUuid);
 
-
-        onScreenLog('Notifications setup 2');
-
         await notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
-
-        onScreenLog('Notifications setup 3');
-
         await notifyCharacteristic.startNotifications();
         onScreenLog('Notifications STARTED ' + notifyCharacteristic.uuid);
+
+        const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, source, mode, interval >> 8, interval & 0xff];
+        await this.writeCharacteristic(command, 'io');
     }
 
     async swNotifyDisable(){
