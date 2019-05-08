@@ -1,11 +1,36 @@
 
 class ThingsConn {
-    constructor(device, svUuid, writeUuid, writeIoUuid, readIoUuid) {
+    constructor(device, svUuid, writeUuid, writeIoUuid, readIoUuid, notifySwUuid) {
         this.device = device;
         this.svUuid = svUuid;
         this.wrUuid = writeUuid;
         this.wrIoUuid = writeIoUuid;
         this.rdIoUuid = readIoUuid;
+        this.ntfySwUuid = notifySwUuid;
+    }
+
+    async swNotifyEnable(source, mode, interval, callback){
+        const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, source, mode, interval >> 8, interval & 0xff];
+        await this.writeCharacteristic(command, 'io');
+
+        const notifyCharacteristic = await getCharacteristic(
+            this.device, this.svUuid, this.ntfySwUuid);
+
+        await notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
+        await notifyCharacteristic.startNotifications();
+        onScreenLog('Notifications STARTED ' + notifyCharacteristic.uuid);
+    }
+
+    async swNotifyDisable(){
+        const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.writeCharacteristic(command, 'io');
+
+        const notifyCharacteristic = await getCharacteristic(
+            this.device, this.svUuid, this.ntfySwUuid);
+
+        await notifyCharacteristic.removeEventListener('characteristicvaluechanged', callback);
+        await notifyCharacteristic.stopNotifications();
+        onScreenLog('Notifications STOP ' + notifyCharacteristic.uuid);
     }
 
     async enterBleioMode(){
