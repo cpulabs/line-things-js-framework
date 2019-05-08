@@ -153,10 +153,15 @@ function notificationSwCallback(e) {
 // Device initialize
 async function setup(things){
     // Enter to BLE-IO mode
+
+    /*
     await things.enterBleioMode().catch(e => {
         onScreenLog('do not support JS-control mode. please update firmware');
         return null;
     });
+    */
+    await things.enterBleioMode();
+
     await sleep(1000);
 
 
