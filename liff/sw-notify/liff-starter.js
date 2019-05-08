@@ -135,10 +135,7 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
             );
 
-            setup(things).catch(e => {
-                onScreenLog('Setup Error');
-                return null;
-            });
+            setup(things);
             //loop(things);
         }).catch(e => {
             flashSDKError(e);
