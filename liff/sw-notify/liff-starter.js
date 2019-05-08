@@ -135,11 +135,11 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
             );
 
-            await setup(things).catch(e => {
+            setup(things).catch(e => {
                 onScreenLog('Setup Error');
                 return null;
             });
-            //await loop(things);
+            //loop(things);
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
