@@ -15,7 +15,7 @@ class ThingsConn {
 
         onScreenLog('Notifications setup 1');
 
-        const notifyCharacteristic = await getCharacteristic(
+        const notifyCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.ntfySwUuid);
 
 
@@ -24,7 +24,7 @@ class ThingsConn {
         await notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
 
         onScreenLog('Notifications setup 3');
-        
+
         await notifyCharacteristic.startNotifications();
         onScreenLog('Notifications STARTED ' + notifyCharacteristic.uuid);
     }
@@ -33,7 +33,7 @@ class ThingsConn {
         const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.writeCharacteristic(command, 'io');
 
-        const notifyCharacteristic = await getCharacteristic(
+        const notifyCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.ntfySwUuid);
 
         await notifyCharacteristic.removeEventListener('characteristicvaluechanged', callback);
