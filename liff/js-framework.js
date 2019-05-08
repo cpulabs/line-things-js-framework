@@ -14,7 +14,10 @@ class ThingsConn {
             this.device, this.svUuid, this.ntfySwUuid);
 
         notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
-        await notifyCharacteristic.startNotifications();
+        await notifyCharacteristic.startNotifications().catch(e => {
+            onScreenLog('notify start error');
+            return null;
+        });
         onScreenLog('Notifications STARTED ' + notifyCharacteristic.uuid);
 
         const command = [17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, source, mode, interval >> 8, interval & 0xff];

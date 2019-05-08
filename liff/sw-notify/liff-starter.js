@@ -135,8 +135,11 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
             );
 
-            setup(things);
-            //loop(things);
+            await setup(things).catch(e => {
+                onScreenLog('Setup Error');
+                return null;
+            });
+            //await loop(things);
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
@@ -153,8 +156,13 @@ function notificationSwCallback(e) {
 // Device initialize
 async function setup(things){
     // Enter to BLE-IO mode
-    await things.enterBleioMode().catch(e => `do not support JS-control mode. please update firmware`);
+    await things.enterBleioMode().catch(e => {
+        onScreenLog('do not support JS-control mode. please update firmware');
+        return null;
+    });
     await sleep(1000);
+
+
 
     // Clear display text, ane write new message
     await things.displayClear();
