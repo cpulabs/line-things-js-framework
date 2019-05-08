@@ -136,7 +136,7 @@ function connectDevice(device) {
             );
 
             setup(things);
-            //loop(things);
+            loop(things);
         }).catch(e => {
             flashSDKError(e);
             onScreenLog(`ERROR on gatt.connect(${device.id}): ${e}`);
@@ -194,7 +194,8 @@ function initializeCardForDevice(device) {
         USER_SERVICE_UUID,
         USER_CHARACTERISTIC_WRITE_UUID,
         USER_CHARACTERISTIC_IO_WRITE_UUID,
-        USER_CHARACTERISTIC_IO_READ_UUID
+        USER_CHARACTERISTIC_IO_READ_UUID,
+        USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
     );
 
     template.querySelector('.setuuid').addEventListener('click', () => {
