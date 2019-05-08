@@ -13,7 +13,7 @@ class ThingsConn {
         const notifyCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.ntfySwUuid);
 
-        await notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
+        notifyCharacteristic.addEventListener('characteristicvaluechanged', callback);
         await notifyCharacteristic.startNotifications();
         onScreenLog('Notifications STARTED ' + notifyCharacteristic.uuid);
 
@@ -28,7 +28,7 @@ class ThingsConn {
         const notifyCharacteristic = await this.getCharacteristic(
             this.device, this.svUuid, this.ntfySwUuid);
 
-        await notifyCharacteristic.removeEventListener('characteristicvaluechanged', callback);
+        notifyCharacteristic.removeEventListener('characteristicvaluechanged', callback);
         await notifyCharacteristic.stopNotifications();
         onScreenLog('Notifications STOP ' + notifyCharacteristic.uuid);
     }
