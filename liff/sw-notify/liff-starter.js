@@ -149,11 +149,15 @@ function connectDevice(device) {
 }
 
 function notificationSwCallback(e) {
+    const dataBuffer = new DataView(e.target.value.buffer);
     onScreenLog(`Notify SW ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
 }
 
 function notificationTempCallback(e) {
-    onScreenLog(`Notify Temperature ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
+    const dataBuffer = new DataView(e.target.value.buffer);
+    onScreenLog(`Notify Temperature : ` + String(((dataBuffer.getInt8(0) << 8) +  dataBuffer.getInt8(1)) / 100));
+
+    //getDeviceTemperature(device).innerText = String(((dataBuffer.getInt8(0) << 8) +  dataBuffer.getInt8(1)) / 100);
 }
 
 // Device initialize
@@ -164,8 +168,6 @@ async function setup(things){
     //await things.enterBleioMode();
 
     await sleep(1000);
-
-
 
     // Clear display text, ane write new message
     await things.displayClear();
