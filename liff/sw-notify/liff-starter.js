@@ -4,6 +4,7 @@ const USER_CHARACTERISTIC_WRITE_UUID = "4f2596d7-b3d6-4102-85a2-947b80ab4c6f";
 const USER_CHARACTERISTIC_IO_WRITE_UUID = "5136e866-d081-47d3-aabc-a2c9518bacd4";
 const USER_CHARACTERISTIC_IO_READ_UUID = "1737f2f4-c3d3-453b-a1a6-9efe69cc944f";
 const USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID = "a11bd5c0-e7da-4015-869b-d5c0087d3cc4"
+const USER_CHARACTERISTIC_IO_NOTIFY_TEMP_UUID = "fe9b11a8-5f98-40d6-ae82-bea94816277f"
 
 const deviceUUIDSet = new Set();
 const connectedUUIDSet = new Set();
@@ -132,7 +133,8 @@ function connectDevice(device) {
                 USER_CHARACTERISTIC_WRITE_UUID,
                 USER_CHARACTERISTIC_IO_WRITE_UUID,
                 USER_CHARACTERISTIC_IO_READ_UUID,
-                USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
+                USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID,
+                USER_CHARACTERISTIC_IO_NOTIFY_TEMP_UUID
             );
 
             setup(things);
@@ -147,20 +149,19 @@ function connectDevice(device) {
 }
 
 function notificationSwCallback(e) {
-    onScreenLog(`Notify ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
+    onScreenLog(`Notify SW ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
+}
+
+function notificationTempCallback(e) {
+    onScreenLog(`Notify Temperature ${e.target.uuid}: ${buf2hex(e.target.value.buffer)}`);
 }
 
 // Device initialize
 async function setup(things){
     // Enter to BLE-IO mode
 
-    /*
-    await things.enterBleioMode().catch(e => {
-        onScreenLog('do not support JS-control mode. please update firmware');
-        return null;
-    });
-    */
-    await things.enterBleioMode();
+    await things.enterBleioMode().catch(e => onScreenLog(`do not support JS-control mode. please update firmware`));
+    //await things.enterBleioMode();
 
     await sleep(1000);
 
@@ -172,12 +173,13 @@ async function setup(things){
     await things.displayWrite("Hello world");
 
     // Initial LED
-    await things.ledWrite(2, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(3, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(4, 1).catch(e => `error: ${e}\n${e.stack}`);
-    await things.ledWrite(5, 1).catch(e => `error: ${e}\n${e.stack}`);
+    await things.ledWrite(2, 1).catch(e => onScreenLog(`LED write error`));
+    await things.ledWrite(3, 1).catch(e => onScreenLog(`LED write error`));
+    await things.ledWrite(4, 1).catch(e => onScreenLog(`LED write error`));
+    await things.ledWrite(5, 1).catch(e => onScreenLog(`LED write error`));
 
-    await things.swNotifyEnable(1, 1, 100, notificationSwCallback);
+    await things.swNotifyEnable(3, 1, 100, notificationSwCallback).catch(e => onScreenLog(`SW Notify set error`));
+    await things.tempNotifyEnable(1000, notificationTempCallback).catch(e => onScreenLog(`Temp Notify set error`));
 }
 
 async function loop(things){
@@ -205,7 +207,8 @@ function initializeCardForDevice(device) {
         USER_CHARACTERISTIC_WRITE_UUID,
         USER_CHARACTERISTIC_IO_WRITE_UUID,
         USER_CHARACTERISTIC_IO_READ_UUID,
-        USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID
+        USER_CHARACTERISTIC_IO_NOTIFY_SW_UUID,
+        USER_CHARACTERISTIC_IO_NOTIFY_TEMP_UUID
     );
 
     template.querySelector('.setuuid').addEventListener('click', () => {
